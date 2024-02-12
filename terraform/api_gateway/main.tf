@@ -18,7 +18,8 @@ resource "aws_api_gateway_resource" "bball8bot" {
   rest_api_id = aws_api_gateway_rest_api.bball8bot.id
   parent_id   = aws_api_gateway_rest_api.bball8bot.root_resource_id
 
-  path_part = ""
+  path_part = "bot"
+  # TODO @jonlee: change later to more appropriate path
 }
 
 resource "aws_api_gateway_method" "bball8bot" {
