@@ -38,3 +38,25 @@ resource "aws_api_gateway_integration" "bball8bot" {
 
   # TODO @jonlee: configure for SQS
 }
+
+resource "aws_api_gateway_method_response" "bball8bot_200" {
+  rest_api_id = aws_api_gateway_rest_api.bball8bot.id
+  resource_id = aws_api_gateway_resource.bball8bot.id
+
+  http_method = aws_api_gateway_method.bball8bot.http_method
+  status_code = 200
+
+  response_models = {
+    "application/json" : "Empty"
+  }
+}
+
+resource "aws_api_gateway_integration_response" "bball8bot_200" {
+  rest_api_id = aws_api_gateway_rest_api.bball8bot.id
+  resource_id = aws_api_gateway_resource.bball8bot.id
+
+  http_method = aws_api_gateway_method.bball8bot.http_method
+  status_code = aws_api_gateway_method_response.bball8bot_200.status_code
+
+  depends_on = [aws_api_gateway_integration.bball8bot]
+}
