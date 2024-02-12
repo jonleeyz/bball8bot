@@ -9,3 +9,32 @@ resource "aws_iam_role" "bball8bot_api_gateway_role" {
   assume_role_policy  = data.aws_iam_policy_document.assume_bball8bot_api_gateway_role.json
   managed_policy_arns = [aws_iam_policy.bball8bot_api_gateway_policy.arn]
 }
+
+resource "aws_api_gateway_rest_api" "bball8bot" {
+  name = "bball8bot"
+}
+
+resource "aws_api_gateway_resource" "bball8bot" {
+  rest_api_id = aws_api_gateway_rest_api.bball8bot.id
+  parent_id   = aws_api_gateway_rest_api.bball8bot.root_resource_id
+
+  path_part = ""
+}
+
+resource "aws_api_gateway_method" "bball8bot" {
+  rest_api_id = aws_api_gateway_rest_api.bball8bot.id
+  resource_id = aws_api_gateway_resource.bball8bot.id
+
+  http_method   = "GET"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "bball8bot" {
+  rest_api_id = aws_api_gateway_rest_api.bball8bot.id
+  resource_id = aws_api_gateway_resource.bball8bot.id
+
+  http_method = aws_api_gateway_method.bball8bot.http_method
+  type        = "MOCK"
+
+  # TODO @jonlee: configure for SQS
+}
