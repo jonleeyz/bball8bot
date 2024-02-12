@@ -60,3 +60,14 @@ resource "aws_api_gateway_integration_response" "bball8bot_200" {
 
   depends_on = [aws_api_gateway_integration.bball8bot]
 }
+
+resource "aws_api_gateway_deployment" "bball8bot_dev" {
+  rest_api_id = aws_api_gateway_rest_api.bball8bot.id
+  stage_name  = "dev"
+
+  depends_on = [aws_api_gateway_integration.bball8bot]
+
+  variables = {
+    deployed_at = timestamp()
+  }
+}
