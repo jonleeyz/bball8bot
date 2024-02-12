@@ -9,3 +9,8 @@ module "sqs" {
   queue_name = "bball8bot_event_queue"
   is_fifo    = false
 }
+
+module "api_gateway" {
+  source    = "./api_gateway"
+  queue_arn = module.sqs.queue_arn
+}
