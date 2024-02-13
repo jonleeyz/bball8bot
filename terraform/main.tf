@@ -11,6 +11,7 @@ module "sqs" {
 }
 
 module "api_gateway" {
-  source    = "./api_gateway"
-  queue_arn = module.sqs.queue_arn
+  source     = "./api_gateway"
+  queue_arn  = module.sqs.queue_arn
+  queue_name = module.sqs.queue_name
 }
