@@ -37,6 +37,31 @@ resource "aws_api_gateway_integration" "bball8bot" {
   http_method = aws_api_gateway_method.bball8bot.http_method
   type        = "AWS"
   uri         = "arn:aws:apigateway:ap-southeast-1:sqs:path/${var.queue_name}"
+
+  # TODO @jonlee: Understand why this is needed
+  request_parameters = {
+    "integration.request.header.Content-Type" = "'application/x-www-form-urlencoded'"
+  }
+
+  # TODO @jonlee: Understand why this is needed
+  request_templates = {
+    "application/json" = <<-EOF
+      Action=SendMessage&MessageBody={
+       "method": "$context.httpMethod",
+       "body-json" : $input.json('$'),
+       "queryParams": {
+         #foreach($param in $input.params().querystring.keySet())
+         "$param": "$util.escapeJavaScript($input.params().querystring.get($param))" #if($foreach.hasNext),#end
+       #end
+       },
+       "pathParams": {
+         #foreach($param in $input.params().path.keySet())
+         "$param": "$util.escapeJavaScript($input.params().path.get($param))" #if($foreach.hasNext),#end
+         #end
+       }
+      }"
+      EOF
+  }
 }
 
 resource "aws_api_gateway_method_response" "bball8bot_200" {
