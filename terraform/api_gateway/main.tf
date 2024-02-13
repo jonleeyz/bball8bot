@@ -35,9 +35,8 @@ resource "aws_api_gateway_integration" "bball8bot" {
   resource_id = aws_api_gateway_resource.bball8bot.id
 
   http_method = aws_api_gateway_method.bball8bot.http_method
-  type        = "MOCK"
-
-  # TODO @jonlee: configure for SQS
+  type        = "AWS"
+  uri         = "arn:aws:apigateway:ap-southeast-1:sqs:path/${var.queue_name}"
 }
 
 resource "aws_api_gateway_method_response" "bball8bot_200" {
