@@ -38,6 +38,7 @@ resource "aws_api_gateway_integration" "bball8bot" {
   integration_http_method = "POST"
   type                    = "AWS"
   uri                     = "arn:aws:apigateway:ap-southeast-1:sqs:path/${var.queue_name}"
+  credentials             = aws_iam_role.bball8bot_api_gateway_role.arn
 
   # TODO @jonlee: Understand why this is needed
   request_parameters = {
