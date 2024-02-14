@@ -37,7 +37,7 @@ resource "aws_api_gateway_integration" "bball8bot" {
   http_method             = aws_api_gateway_method.bball8bot.http_method
   integration_http_method = "POST"
   type                    = "AWS"
-  uri                     = "arn:aws:apigateway:ap-southeast-1:sqs:path/${var.queue_name}"
+  uri                     = "arn:aws:apigateway:${var.aws_region}:sqs:path/${var.queue_name}"
   credentials             = aws_iam_role.bball8bot_api_gateway_role.arn
 
   # TODO @jonlee: Understand why this is needed
