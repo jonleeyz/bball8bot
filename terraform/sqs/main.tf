@@ -1,4 +1,4 @@
-resource "aws_sqs_queue" "bball8bot_event_queue" {
+resource "aws_sqs_queue" "bball8bot_events" {
   name                       = var.queue_name
   delay_seconds              = 0
   visibility_timeout_seconds = 30
