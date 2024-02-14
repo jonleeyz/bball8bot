@@ -34,10 +34,36 @@ resource "aws_api_gateway_integration" "bball8bot" {
   rest_api_id = aws_api_gateway_rest_api.bball8bot.id
   resource_id = aws_api_gateway_resource.bball8bot.id
 
-  http_method = aws_api_gateway_method.bball8bot.http_method
-  type        = "MOCK"
+  http_method             = aws_api_gateway_method.bball8bot.http_method
+  integration_http_method = "POST"
+  type                    = "AWS"
+  uri                     = "arn:aws:apigateway:${var.aws_region}:sqs:path/${var.queue_name}"
+  credentials             = aws_iam_role.bball8bot_api_gateway_role.arn
 
-  # TODO @jonlee: configure for SQS
+  # TODO @jonlee: Understand why this is needed
+  request_parameters = {
+    "integration.request.header.Content-Type" = "'application/x-www-form-urlencoded'"
+  }
+
+  # TODO @jonlee: Understand why this is needed
+  request_templates = {
+    "application/json" = <<-EOF
+      Action=SendMessage&MessageBody={
+       "method": "$context.httpMethod",
+       "body-json" : $input.json('$'),
+       "queryParams": {
+         #foreach($param in $input.params().querystring.keySet())
+         "$param": "$util.escapeJavaScript($input.params().querystring.get($param))" #if($foreach.hasNext),#end
+       #end
+       },
+       "pathParams": {
+         #foreach($param in $input.params().path.keySet())
+         "$param": "$util.escapeJavaScript($input.params().path.get($param))" #if($foreach.hasNext),#end
+         #end
+       }
+      }"
+      EOF
+  }
 }
 
 resource "aws_api_gateway_method_response" "bball8bot_200" {
