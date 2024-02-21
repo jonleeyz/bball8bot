@@ -5,9 +5,13 @@ module "lambda" {
 }
 
 module "sqs" {
-  source     = "./sqs"
-  queue_name = "bball8bot_event_queue"
-  is_fifo    = false
+  source      = "./sqs"
+  queue_name  = "bball8bot_event_queue"
+  is_fifo     = false
+  lambda_name = module.lambda.function_name
+
+  is_sqs_to_lambda_integration_enabled = false
+  sqs_to_lambda_batch_size             = 1
 }
 
 module "api_gateway" {

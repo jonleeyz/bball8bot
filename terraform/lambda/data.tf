@@ -4,7 +4,25 @@ data "aws_iam_policy_document" "bball8bot_lambda_policy" {
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
-      "logs:PutLogEvents"
+      "logs:PutLogEvents",
+    ]
+
+    resources = ["arn:aws:logs:*:*"]
+  }
+  statement {
+    effect = "Allow"
+    actions = [
+      "sqs:DeleteMessage",
+      "sqs:ReceiveMessage",
+      "sqs:GetQueueAttributes"
+    ]
+
+    resources = ["*"]
+  }
+  statement {
+    effect = "Allow"
+    actions = [
+      "sqs:ListQueues"
     ]
 
     resources = ["*"]
