@@ -2,7 +2,7 @@ output "queue_arn" {
   value = module.sqs.queue_arn
 }
 
-output "lambda_function_name" {
+output "lambda_name" {
   value = module.lambda.function_name
 }
 
