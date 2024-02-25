@@ -20,3 +20,8 @@ module "api_gateway" {
   queue_name = module.sqs.queue_name
   aws_region = var.aws_region
 }
+
+module "secrets_manager" {
+  source = "./secrets_manager"
+  telegram_bot_token = var.telegram_bot_token
+}
