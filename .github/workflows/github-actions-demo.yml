@@ -1,0 +1,32 @@
+name: PR Plan
+
+on: [pull_request]
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  TERRAFORM_CLOUD_TOKENS: terraform.example.com=${{ secrets.TF_REGISTRY_TOKEN }}
+  TERRAFORM_SSH_KEY: ${{ secrets.TERRAFORM_SSH_KEY }}
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    name: Create Terraform plan
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: terraform plan
+        uses: dflook/terraform-plan@v1
+        with:
+          path: ../../terraform
+          label: development
+          workspace: development
+          var_file: terraform.tfvars
+          variables: |
+            turbo_mode=true
+          backend_config_file: env/prod.backend
+          backend_config: token=${{ secrets.BACKEND_TOKEN }}
