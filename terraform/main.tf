@@ -11,13 +11,13 @@ module "lambda" {
 
   is_sqs_to_lambda_integration_enabled = false
   sqs_to_lambda_batch_size             = 1
-  sqs_arn = module.sqs.arn
+  sqs_arn                              = module.sqs.arn
 }
 
 module "sqs" {
-  source      = "./sqs"
-  queue_name  = "bball8bot_event_queue"
-  is_fifo     = false
+  source     = "./sqs"
+  queue_name = "bball8bot_event_queue"
+  is_fifo    = false
 }
 
 module "api_gateway" {
@@ -28,6 +28,6 @@ module "api_gateway" {
 }
 
 module "secrets_manager" {
-  source = "./secrets_manager"
+  source             = "./secrets_manager"
   telegram_bot_token = var.telegram_bot_token
 }
