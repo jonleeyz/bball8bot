@@ -7,16 +7,16 @@ module "lambda" {
   lambda_name           = "bball8bot_event_handler"
   handler_function_name = "main"
   lambda_iam_role_arn   = module.iam.lambda_iam_role_arn
+
+  is_sqs_to_lambda_integration_enabled = false
+  sqs_to_lambda_batch_size             = 1
+  sqs_arn = module.sqs.queue_arn
 }
 
 module "sqs" {
   source      = "./sqs"
   queue_name  = "bball8bot_event_queue"
   is_fifo     = false
-  lambda_name = module.lambda.function_name
-
-  is_sqs_to_lambda_integration_enabled = false
-  sqs_to_lambda_batch_size             = 1
 }
 
 module "api_gateway" {
