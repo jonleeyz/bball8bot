@@ -1,5 +1,6 @@
 module "iam" {
-  source = "./iam"
+  source  = "./iam"
+  sqs_arn = module.sqs.queue_arn
 }
 
 module "lambda" {
@@ -20,10 +21,11 @@ module "sqs" {
 }
 
 module "api_gateway" {
-  source     = "./api_gateway"
-  queue_arn  = module.sqs.queue_arn
-  queue_name = module.sqs.queue_name
-  aws_region = var.aws_region
+  source                   = "./api_gateway"
+  queue_arn                = module.sqs.queue_arn
+  queue_name               = module.sqs.queue_name
+  aws_region               = var.aws_region
+  api_gateway_iam_role_arn = module.iam.api_gateway_iam_role_arn
 }
 
 module "secrets_manager" {
