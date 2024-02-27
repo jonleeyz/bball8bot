@@ -17,7 +17,3 @@ output "api_resource_path" {
 output "api_resource_method" {
   value = module.api_gateway.resource_method
 }
-
-output "lambda_invoke_arn" {
-  value = module.lambda.invoke_arn
-}
