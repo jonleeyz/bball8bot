@@ -14,7 +14,7 @@ variable "lambda_iam_role_arn" {
 }
 
 variable "sqs_arn" {
-  description = "The ARN of the SQS queue that the Lambda will consume events from"
+  description = "The ARN of the SQS event queue that the Lambda will consume events from"
   type        = string
 }
 
