@@ -1,3 +1,9 @@
+module "sqs" {
+  source     = "./sqs"
+  queue_name = "bball8bot_event_queue"
+  is_fifo    = false
+}
+
 module "iam" {
   source  = "./iam"
   sqs_arn = module.sqs.arn
@@ -12,12 +18,6 @@ module "lambda" {
   is_sqs_to_lambda_integration_enabled = false
   sqs_to_lambda_batch_size             = 1
   sqs_arn                              = module.sqs.arn
-}
-
-module "sqs" {
-  source     = "./sqs"
-  queue_name = "bball8bot_event_queue"
-  is_fifo    = false
 }
 
 module "api_gateway" {
