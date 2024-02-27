@@ -1,6 +1,6 @@
 # Terraform
-terraform/.terraform.lock.hcl
-terraform/.terraform/
-terraform/bin/
-terraform/terraform.tfstate
-terraform/terraform.tfstate.backup
+.terraform.lock.hcl
+.terraform/
+*/terraform/bin/
+*/terraform/terraform.tfstate
+*/terraform/terraform.tfstate.backup
