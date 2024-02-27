@@ -7,7 +7,6 @@ data "aws_iam_policy_document" "lambda_policy" {
       "logs:PutLogEvents",
     ]
 
-    # TODO @jonlee: Tighten scope
     resources = ["arn:aws:logs:*:*"]
   }
   statement {
@@ -26,7 +25,6 @@ data "aws_iam_policy_document" "lambda_policy" {
       "sqs:ListQueues"
     ]
 
-    # TODO @jonlee: Tighten scope
     resources = ["*"]
   }
 }
