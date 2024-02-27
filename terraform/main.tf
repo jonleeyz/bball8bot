@@ -15,7 +15,7 @@ module "lambda" {
   handler_function_name = "main"
   lambda_iam_role_arn   = module.iam.lambda_iam_role_arn
 
-  is_sqs_to_lambda_integration_enabled = false
+  is_sqs_to_lambda_integration_enabled = true
   sqs_to_lambda_batch_size             = 1
   sqs_arn                              = module.sqs.arn
 }
