@@ -1,7 +1,12 @@
+module "iam" {
+  source = "./iam"
+}
+
 module "lambda" {
   source                = "./lambda"
   lambda_name           = "bball8bot_event_handler"
   handler_function_name = "main"
+  lambda_iam_role_arn   = module.iam.lambda_iam_role_arn
 }
 
 module "sqs" {
