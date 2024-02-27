@@ -1,6 +1,6 @@
 module "iam" {
   source  = "./iam"
-  sqs_arn = module.sqs.queue_arn
+  sqs_arn = module.sqs.arn
 }
 
 module "lambda" {
@@ -11,7 +11,7 @@ module "lambda" {
 
   is_sqs_to_lambda_integration_enabled = false
   sqs_to_lambda_batch_size             = 1
-  sqs_arn = module.sqs.queue_arn
+  sqs_arn = module.sqs.arn
 }
 
 module "sqs" {
@@ -22,7 +22,6 @@ module "sqs" {
 
 module "api_gateway" {
   source                   = "./api_gateway"
-  queue_arn                = module.sqs.queue_arn
   queue_name               = module.sqs.queue_name
   aws_region               = var.aws_region
   api_gateway_iam_role_arn = module.iam.api_gateway_iam_role_arn

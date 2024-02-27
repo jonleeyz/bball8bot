@@ -1,5 +1,5 @@
 output "queue_arn" {
-  value = module.sqs.queue_arn
+  value = module.sqs.arn
 }
 
 output "lambda_name" {
