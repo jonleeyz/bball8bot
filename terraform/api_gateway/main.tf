@@ -1,15 +1,3 @@
-resource "aws_iam_policy" "bball8bot_api_gateway_policy" {
-  name   = "bball8botAPIGatewayPolicy"
-  path   = "/"
-  policy = data.aws_iam_policy_document.bball8bot_api_gateway_policy.json
-}
-
-resource "aws_iam_role" "bball8bot_api_gateway_role" {
-  name                = "bball8botAPIGatewayRole"
-  assume_role_policy  = data.aws_iam_policy_document.assume_bball8bot_api_gateway_role.json
-  managed_policy_arns = [aws_iam_policy.bball8bot_api_gateway_policy.arn]
-}
-
 resource "aws_api_gateway_rest_api" "bball8bot" {
   name = "bball8bot"
 }
@@ -38,7 +26,7 @@ resource "aws_api_gateway_integration" "bball8bot" {
   integration_http_method = "POST"
   type                    = "AWS"
   uri                     = "arn:aws:apigateway:${var.aws_region}:sqs:path/${var.queue_name}"
-  credentials             = aws_iam_role.bball8bot_api_gateway_role.arn
+  credentials             = var.api_gateway_iam_role_arn
 
   # TODO @jonlee: Understand why this is needed
   request_parameters = {

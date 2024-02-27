@@ -1,22 +1,28 @@
 resource "aws_lambda_function" "bball8bot_event_handler" {
   function_name = var.lambda_name
   handler       = var.handler_function_name
-
-  role = aws_iam_role.bball8bot_lambda.arn
+  role          = var.lambda_iam_role_arn
 
   # Ref: https://docs.aws.amazon.com/lambda/latest/dg/runtimes-provided.html
   runtime  = "provided.al2023"
   filename = local.output_archive_path
 }
 
-resource "aws_iam_policy" "bball8bot_lambda" {
-  name   = "bball8botLambdaPolicy"
-  path   = "/"
-  policy = data.aws_iam_policy_document.bball8bot_lambda_policy.json
+##### Enables Lambda event handler to be triggered by SQS events
+
+resource "aws_lambda_permission" "allow_sqs_event_to_trigger_lambda_event_handler" {
+  statement_id = "AllowLambdaExecutionfromSQS"
+  action       = "lambda:InvokeFuntion"
+
+  principal     = "sqs.amazonaws.com"
+  function_name = var.lambda_name
+  source_arn    = var.sqs_arn
 }
 
-resource "aws_iam_role" "bball8bot_lambda" {
-  name                = "bball8botLambdaRole"
-  assume_role_policy  = data.aws_iam_policy_document.assume_bball8bot_lambda_role.json
-  managed_policy_arns = [aws_iam_policy.bball8bot_lambda.arn]
+resource "aws_lambda_event_source_mapping" "sqs_event_queue_to_lambda_event_handler" {
+  enabled    = var.is_sqs_to_lambda_integration_enabled
+  batch_size = var.sqs_to_lambda_batch_size
+
+  function_name    = var.lambda_name
+  event_source_arn = var.sqs_arn
 }

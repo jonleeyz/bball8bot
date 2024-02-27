@@ -1,4 +1,4 @@
-output "queue_arn" {
+output "arn" {
   value = aws_sqs_queue.bball8bot_events.arn
 }
 
