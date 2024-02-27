@@ -12,7 +12,7 @@ terraform {
     region = "ap-southeast-1"
 
     bucket = "jl-terraform-remote-state-store"
-    key    = "bball8bot/terraform.tfstate"
+    key    = "bball8bot/infra/terraform.tfstate"
 
     dynamodb_table = "terraform_state_lock"
   }
