@@ -3,8 +3,7 @@ data "aws_iam_policy_document" "terraform_state_management_policy" {
     effect  = "Allow"
     actions = ["s3:ListBucket"]
 
-    // change
-    resources = [aws_s3_bucket.terraform_state_store.arn]
+    resources = [local.state_store_bucket_arn]
   }
   statement {
     effect = "Allow"
@@ -13,8 +12,7 @@ data "aws_iam_policy_document" "terraform_state_management_policy" {
       "s3:PutObject",
     ]
 
-    // change
-    resources = ["${aws_s3_bucket.terraform_state_store.arn}/${local.workspace_bucket_key}"]
+    resources = ["${local.state_store_bucket_arn}/${local.workspace_bucket_key}"]
   }
   statement {
     effect = "Allow"
@@ -25,10 +23,7 @@ data "aws_iam_policy_document" "terraform_state_management_policy" {
       "dynamodb:DeleteItem"
     ]
 
-    resources = [
-      // change
-      aws_dynamodb_table.terraform_state_lock.arn
-    ]
+    resources = [local.state_lock_table_arn]
   }
 }
 
@@ -52,17 +47,14 @@ data "aws_iam_policy_document" "assume_account_wide_terraform_support_role" {
 
     condition {
       test     = "StringLike"
-      // change
       variable = "${local.github_oidc_provider_url}:sub"
       values = [
-        "repo:jonleeyz/terraform-backend:*",
-        // change
+        "repo:jonleeyz/bball8bot:*",
       ]
     }
 
     principals {
       type        = "Federated"
-      // change
       identifiers = ["arn:aws:iam::574182556674:oidc-provider/${local.github_oidc_provider_url}"]
     }
   }
