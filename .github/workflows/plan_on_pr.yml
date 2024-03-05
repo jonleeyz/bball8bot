@@ -1,0 +1,258 @@
+name: "CI/CD: On PR creation"
+on:
+  pull_request:
+permissions:
+      id-token: write       # Required for AWS OIDC connection
+      contents: read        # Required by actions/checkout
+      pull-requests: write  # Required by GitHub bot to create comments on PRs
+env:
+  TF_LOG: INFO
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+jobs:
+  terraform-plan-infra:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./infra/terraform
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v3
+
+      - name: Assume CI AWS IAM role
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-session-name: GitHub-OIDC-TERRAFORM
+
+      - name: Install Terraform CLI
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.0
+
+      - name: terraform fmt
+        id: fmt
+        run: terraform fmt -check -recursive
+        continue-on-error: true
+
+      - name: terraform init
+        id: init
+        env:
+          AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+          AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME }}
+        run: terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME_INFRA}" -backend-config="region=${AWS_REGION}"
+
+      - name: terraform validate
+        id: validate
+        run: terraform validate
+
+      - name: terraform plan
+        id: plan
+        run: terraform plan -input=false
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+
+      - name: Report workflow output
+        uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            let output = `### CI workflow: Terraform plan
+
+            Commit: ${{ github.sha }}
+            Pushed by: @${{ github.actor }}
+            Action: \`${{ github.event_name }}\`
+
+            ---
+
+            #### Summary: \`infra\` Terraform workspace
+
+            1. \`terraform fmt\`: ️ \`${{ steps.fmt.outcome }}\`
+            2. \`terraform init\`:  \`${{ steps.init.outcome }}\`
+            3. \`terraform validate\`:  \`${{ steps.validate.outcome }}\`
+            4. \`terraform plan\`:  \`${{ steps.plan.outcome }}\`
+
+            <details open><summary>Generated plan:</summary>
+
+            \`\`\`
+            ${{ steps.plan.outputs.stdout }}
+            \`\`\`
+
+            </details>
+
+            ---
+
+            `;
+
+            output = output.replace(/success/g, "success ✅")
+            output = output.replace(/failure/g, "failure ❌")
+
+            const debugInfo = `### Debug information
+
+            <details><summary>terraform fmt:</summary>
+
+            \`\`\`
+            ${{ steps.fmt.outputs.stdout }}
+            \`\`\`
+           
+            </details>
+
+            \n
+
+            <details><summary>terraform init:</summary>
+
+            \`\`\`
+            ${{ steps.init.outputs.stdout }}
+            \`\`\`
+           
+            </details>
+
+            \n
+
+            <details><summary>terraform validate:</summary>
+
+            \`\`\`
+            ${{ steps.validate.outputs.stdout }}
+            \`\`\`
+           
+            </details>
+
+            ---
+            Comment \`/terraform plan infra\` to regenerate the plan.
+            Comment \`/terraform apply infra\` to apply the generated plan.
+            `;
+
+            output = output.concat(debugInfo)
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+  terraform-plan-ci:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./ci/terraform
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v3
+
+      - name: Assume CI AWS IAM role
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-session-name: GitHub-OIDC-TERRAFORM
+
+      - name: Install Terraform CLI
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.0
+
+      - name: terraform fmt
+        id: fmt
+        run: terraform fmt -check -recursive
+        continue-on-error: true
+
+      - name: terraform init
+        id: init
+        env:
+          AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+          AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME }}
+        run: terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME_CI}" -backend-config="region=${AWS_REGION}"
+
+      - name: terraform validate
+        id: validate
+        run: terraform validate
+
+      - name: terraform plan
+        id: plan
+        run: terraform plan -input=false
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+
+      - name: Report workflow output
+        uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            let output = `### CI workflow: Terraform plan
+
+            Commit: ${{ github.sha }}
+            Pushed by: @${{ github.actor }}
+            Action: \`${{ github.event_name }}\`
+
+            ---
+
+            #### Summary: \`CI\` Terraform workspace
+
+            1. \`terraform fmt\`: ️ \`${{ steps.fmt.outcome }}\`
+            2. \`terraform init\`:  \`${{ steps.init.outcome }}\`
+            3. \`terraform validate\`:  \`${{ steps.validate.outcome }}\`
+            4. \`terraform plan\`:  \`${{ steps.plan.outcome }}\`
+
+            <details open><summary>Generated plan:</summary>
+
+            \`\`\`
+            ${{ steps.plan.outputs.stdout }}
+            \`\`\`
+
+            </details>
+
+            ---
+
+            `;
+
+            output = output.replace(/success/g, "success ✅")
+            output = output.replace(/failure/g, "failure ❌")
+
+            const debugInfo = `### Debug information
+
+            <details><summary>terraform fmt:</summary>
+
+            \`\`\`
+            ${{ steps.fmt.outputs.stdout }}
+            \`\`\`
+           
+            </details>
+
+            \n
+
+            <details><summary>terraform init:</summary>
+
+            \`\`\`
+            ${{ steps.init.outputs.stdout }}
+            \`\`\`
+           
+            </details>
+
+            \n
+
+            <details><summary>terraform validate:</summary>
+
+            \`\`\`
+            ${{ steps.validate.outputs.stdout }}
+            \`\`\`
+           
+            </details>
+
+            ---
+            Comment \`/terraform plan ci\` to regenerate the plan.
+            Comment \`/terraform apply ci\` to apply the generated plan.
+            `;
+
+            output = output.concat(debugInfo)
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+
