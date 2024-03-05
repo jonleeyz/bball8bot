@@ -12,7 +12,10 @@ data "aws_iam_policy_document" "terraform_state_management_policy" {
       "s3:PutObject",
     ]
 
-    resources = ["${local.state_store_bucket_arn}/${local.workspace_bucket_key}"]
+    resources = [
+      "${local.state_store_bucket_arn}/${local.infra_workspace_bucket_key}",
+      "${local.state_store_bucket_arn}/${local.ci_workspace_bucket_key}"
+    ]
   }
   statement {
     effect = "Allow"
