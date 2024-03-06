@@ -53,11 +53,10 @@ jobs:
           TF_VAR_telegram_bot_token: ${{ secrets.TF_VAR_TELEGRAM_BOT_TOKEN }}
         run: terraform plan -input=false
         if: github.event_name == 'pull_request'
-        continue-on-error: true
 
       - name: Report workflow output
         uses: actions/github-script@v6
-        if: github.event_name == 'pull_request'
+        if: always()
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
