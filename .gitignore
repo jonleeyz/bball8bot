@@ -4,3 +4,5 @@
 */terraform/bin/
 */terraform/terraform.tfstate
 */terraform/terraform.tfstate.backup
+
+*.sh
