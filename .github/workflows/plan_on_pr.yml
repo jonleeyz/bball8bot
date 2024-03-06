@@ -60,7 +60,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            let output = `### CI workflow: Terraform plan
+            let output = `### \`infra\` Terraform workspace: \`terraform plan\`
 
             Commit: ${{ github.sha }}
             Pushed by: @${{ github.actor }}
@@ -68,7 +68,7 @@ jobs:
 
             ---
 
-            #### Summary: \`infra\` Terraform workspace
+            #### Summary:
 
             1. \`terraform fmt\`: ️ \`${{ steps.fmt.outcome }}\`
             2. \`terraform init\`:  \`${{ steps.init.outcome }}\`
@@ -183,7 +183,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            let output = `### CI workflow: Terraform plan
+            let output = `### \`CI\` Terraform workspace: \`terraform plan\`
 
             Commit: ${{ github.sha }}
             Pushed by: @${{ github.actor }}
@@ -191,7 +191,7 @@ jobs:
 
             ---
 
-            #### Summary: \`CI\` Terraform workspace
+            #### Summary:
 
             1. \`terraform fmt\`: ️ \`${{ steps.fmt.outcome }}\`
             2. \`terraform init\`:  \`${{ steps.init.outcome }}\`
