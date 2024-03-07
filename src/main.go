@@ -17,6 +17,7 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) (*string, error)
 		return nil, fmt.Errorf("received nil event")
 	}
 	message := fmt.Sprintf("Hello %v!", event.Records)
+	fmt.Println(message)
 	return &message, nil
 }
 
