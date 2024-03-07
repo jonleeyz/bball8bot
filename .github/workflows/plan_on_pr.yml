@@ -17,7 +17,7 @@ jobs:
         working-directory: ./infra/terraform
     steps:
       - name: git checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Go
         uses: actions/setup-go@v4
@@ -162,7 +162,7 @@ jobs:
         working-directory: ./ci/terraform
     steps:
       - name: git checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Assume CI AWS IAM role
         uses: aws-actions/configure-aws-credentials@v4
