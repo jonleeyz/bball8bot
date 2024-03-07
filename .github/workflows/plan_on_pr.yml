@@ -25,6 +25,7 @@ jobs:
           go-version: '1.21.x'
 
       - name: Build Lambda function handler Go executable
+        id: go-build
         working-directory: ./src
         run: GOOS=linux GOARCH=amd64 go build -tags lambda.norpc -o ../infra/terraform/bin/bootstrap main.go
 
@@ -79,10 +80,11 @@ jobs:
 
             #### Summary:
 
-            1. \`terraform fmt\`: ️ \`${{ steps.fmt.outcome }}\`
-            2. \`terraform init\`:  \`${{ steps.init.outcome }}\`
-            3. \`terraform validate\`:  \`${{ steps.validate.outcome }}\`
-            4. \`terraform plan\`:  \`${{ steps.plan.outcome }}\`
+            1. \`go build\`:  \`${{ steps.go-build.outcome }}\`
+            2. \`terraform fmt\`: ️ \`${{ steps.fmt.outcome }}\`
+            3. \`terraform init\`:  \`${{ steps.init.outcome }}\`
+            4. \`terraform validate\`:  \`${{ steps.validate.outcome }}\`
+            5. \`terraform plan\`:  \`${{ steps.plan.outcome }}\`
 
             <details open><summary>Generated plan:</summary>
 
@@ -100,6 +102,16 @@ jobs:
             output = output.replace(/failure/g, "failure ❌")
 
             const debugInfo = `### Debug information
+
+            <details><summary>go build:</summary>
+
+            \`\`\`
+            ${{ steps.go-build.outputs.stdout }}
+            \`\`\`
+           
+            </details>
+
+            \n
 
             <details><summary>terraform fmt:</summary>
 
