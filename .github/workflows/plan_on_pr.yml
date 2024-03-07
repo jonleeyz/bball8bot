@@ -51,7 +51,8 @@ jobs:
         env:
           AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
           AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME_INFRA }}
-        run: terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}" -backend-config="region=${AWS_REGION}"
+          AWS_STATE_LOCK_TABLE_NAME: ${{ secrets.AWS_STATE_LOCK_TABLE_NAME }}
+        run: terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}" -backend-config="region=${AWS_REGION}" -backend-config="dynamodb_table=${AWS_STATE_LOCK_TABLE_NAME}"
 
       - name: terraform validate
         id: validate
@@ -186,7 +187,8 @@ jobs:
         env:
           AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
           AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME_CI }}
-        run: terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}" -backend-config="region=${AWS_REGION}"
+          AWS_STATE_LOCK_TABLE_NAME: ${{ secrets.AWS_STATE_LOCK_TABLE_NAME }}
+        run: terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}" -backend-config="region=${AWS_REGION}" -backend-config="dynamodb_table=${AWS_STATE_LOCK_TABLE_NAME}"
 
       - name: terraform validate
         id: validate
