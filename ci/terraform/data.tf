@@ -34,10 +34,50 @@ data "aws_iam_policy_document" "workspace_infra_policy" {
   statement {
     effect = "Allow"
     actions = [
-      // change
-      "s3:*",
-      "dynamodb:*",
-      "iam:*"
+      "iam:*",
+    ]
+
+    // TODO @jonlee: might want to scope more narrowly if possible
+    resources = ["*"]
+  }
+  statement {
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+    ]
+
+    resources = ["arn:aws:logs:*:*"]
+  }
+  statement {
+    effect = "Allow"
+    actions = [
+      "apigateway:*"
+    ]
+
+    resources = ["arn:aws:apigateway:*::/*"]
+  }
+  statement {
+    effect = "Allow"
+    actions = [
+      "sqs:*",
+    ]
+
+    resources = ["arn:aws:sqs:ap-southeast-1:574182556674:bball8bot_event_queue"]
+  }
+  statement {
+    effect = "Allow"
+    actions = [
+      "secretsmanager:*",
+    ]
+
+    resources = ["arn:aws:secretsmanager:ap-southeast-1:574182556674:secret:telegram_bot_token-aaEKZR"]
+  }
+  statement {
+    effect = "Allow"
+    actions = [
+      "lambda:*"
     ]
 
     resources = ["*"]
