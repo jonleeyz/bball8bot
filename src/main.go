@@ -83,19 +83,23 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 	logInManualDebugMode("Event: %v", event.Records)
 
 	for _, record := range event.Records {
-		var recordBody RecordBody
+		var recordBodyUnmarshalDestination RecordBody
 
-		logInManualDebugMode("Record body unmarshal object value pre-unmarshal: %v", recordBody)
+		logInManualDebugMode("Record body unmarshal object value pre-unmarshal: %v", recordBodyUnmarshalDestination)
 		logInManualDebugMode("Record body raw string pre-unmarshal: %s", record.Body)
 
-		if err := json.Unmarshal([]byte(record.Body), &recordBody); err != nil {
+		// slice off last char in record.Body; record.Body is invalid json due to extra lagging " char
+		recordBodySourceSnipped := record.Body[:len(record.Body)-1]
+		logInManualDebugMode("Record body input snipped pre-unmarshal: %s", record.Body)
+
+		if err := json.Unmarshal([]byte(recordBodySourceSnipped), &recordBodyUnmarshalDestination); err != nil {
 			log.Printf("error while unmarshaling Telegram Update object: %v", err)
 			continue
 		}
 
-		logInManualDebugMode("Record body unmarshal object value post-unmarshal: %v", recordBody)
+		logInManualDebugMode("Record body unmarshal object value post-unmarshal: %v", recordBodyUnmarshalDestination)
 
-		update := recordBody.Body
+		update := recordBodyUnmarshalDestination.Body
 		logInManualDebugMode("Update: %v", update)
 
 		// if _, err := bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)); err != nil {
