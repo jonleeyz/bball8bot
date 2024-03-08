@@ -42,16 +42,10 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 			log.Printf("error when unmarshaling SQS message: %v", err)
 		}
 
-		// if _, err := bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)); err != nil {
-		chattable := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
-		sendOutcome, err := bot.Send(chattable)
-		if err != nil {
+		if _, err := bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)); err != nil {
 			log.Printf("error when calling Telegram Bot API to send message: %v", err)
 			continue
 		}
-
-		logInManualDebugMode("Chattable object: %+v", chattable)
-		logInManualDebugMode("bot.Send outcome: %+v", sendOutcome)
 	}
 	return nil
 }
