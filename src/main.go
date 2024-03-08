@@ -71,10 +71,16 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 
 	for _, record := range event.Records {
 		var update tgbotapi.Update
+
+		logInManualDebugMode("Update object value pre-unmarshal: %v", update)
+		logInManualDebugMode("Record body raw string pre-unmarshal: %s", record.Body)
+
 		if err := json.Unmarshal([]byte(record.Body), &update); err != nil {
 			log.Printf("error while unmarshaling Telegram Update object: %v", err)
 			continue
 		}
+
+		logInManualDebugMode("Update object value pre-unmarshal: %v", update)
 
 		logInManualDebugMode("Update: %v", update)
 
