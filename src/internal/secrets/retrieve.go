@@ -1,4 +1,4 @@
-package main
+package secrets
 
 import (
 	"encoding/json"
@@ -6,11 +6,11 @@ import (
 	"os"
 )
 
-// getBotToken requests the Telegram bot token from AWS Secrets Manager and returns it for use.
+// GetBotToken requests the Telegram bot token from AWS Secrets Manager and returns it for use.
 // This implementation makes use of the AWS Parameters and Secrets Lambda Extension and only works when a Lambda function
 // executes it.
 // Ref: https://docs.aws.amazon.com/secretsmanager/latest/userguide/retrieving-secrets_lambda.html
-func getBotToken() (string, error) {
+func GetBotToken() (string, error) {
 	client := &http.Client{}
 
 	// 1. Prepare HTTP request to get bot token

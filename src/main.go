@@ -9,6 +9,7 @@ import (
 
 	"github.com/jonleeyz/bbball8bot/internal/json"
 	"github.com/jonleeyz/bbball8bot/internal/logging"
+	"github.com/jonleeyz/bbball8bot/internal/secrets"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
@@ -20,7 +21,7 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 		return fmt.Errorf(errMessage)
 	}
 
-	token, err := getBotToken()
+	token, err := secrets.GetBotToken()
 	if err != nil {
 		logging.Fatalf("error when retrieving Telegram bot token: %v", err)
 		return err
