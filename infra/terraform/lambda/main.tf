@@ -8,6 +8,13 @@ resource "aws_lambda_function" "bball8bot_event_handler" {
   filename         = local.output_archive_path
   source_code_hash = data.archive_file.zipped_binary_for_deploy.output_base64sha256
   layers           = [local.parameters_and_secrets_extension_layer_arn]
+
+  environment {
+    variables = {
+      PARAMETERS_SECRETS_EXTENSION_CACHE_ENABLED = "true"
+      PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL     = "debug"
+    }
+  }
 }
 
 ##### Enables Lambda event handler to be triggered by SQS events
