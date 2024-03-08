@@ -71,10 +71,16 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 
 	for _, record := range event.Records {
 		var update tgbotapi.Update
+
+		logInManualDebugMode("Update object value pre-unmarshal: %v", update)
+		logInManualDebugMode("Record body raw string pre-unmarshal: %s", record.Body)
+
 		if err := json.Unmarshal([]byte(record.Body), &update); err != nil {
-			log.Println(err)
+			log.Printf("error while unmarshaling Telegram Update object: %v", err)
 			continue
 		}
+
+		logInManualDebugMode("Update object value pre-unmarshal: %v", update)
 
 		logInManualDebugMode("Update: %v", update)
 
@@ -82,7 +88,7 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 		chattable := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
 		sendOutcome, err := bot.Send(chattable)
 		if err != nil {
-			log.Println(err)
+			log.Printf("error when calling Telegram Bot API to send message: %v", err)
 			continue
 		}
 
