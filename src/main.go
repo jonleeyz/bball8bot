@@ -83,6 +83,12 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 	return nil
 }
 
+// logInManualDebugMode is a syntatic wrapper around the log.Printf function that creates a log entry with debug tags.
+func logInManualDebugMode(message string, debugObject ...interface{}) {
+	debugLog := fmt.Sprintf(message, debugObject...)
+	log.Printf("[MANUAL_DEBUG_LOG] %s", debugLog)
+}
+
 func main() {
 	lambda.Start(HandleRequest)
 }
