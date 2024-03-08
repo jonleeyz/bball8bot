@@ -66,7 +66,8 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 		return err
 	}
 
-	log.Printf("handler log: %v\n", event.Records)
+	logInManualDebugMode("Number of records in event: %d", len(event.Records))
+	logInManualDebugMode("Eevent: %v", event.Records)
 
 	for _, record := range event.Records {
 		var update tgbotapi.Update
@@ -75,12 +76,26 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 			continue
 		}
 
-		if _, err := bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)); err != nil {
+		logInManualDebugMode("Update: %v", update)
+
+		// if _, err := bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)); err != nil {
+		chattable := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
+		sendOutcome, err := bot.Send(chattable)
+		if err != nil {
 			log.Println(err)
 			continue
 		}
+
+		logInManualDebugMode("Chattable object: %v", chattable)
+		logInManualDebugMode("bot.Send outcome: %v", sendOutcome)
 	}
 	return nil
+}
+
+// logInManualDebugMode is a syntatic wrapper around the log.Printf function that creates a log entry with debug tags.
+func logInManualDebugMode(message string, debugObject ...interface{}) {
+	debugLog := fmt.Sprintf(message, debugObject...)
+	log.Printf("[MANUAL_DEBUG_LOG] %s", debugLog)
 }
 
 func main() {
