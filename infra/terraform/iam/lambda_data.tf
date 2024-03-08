@@ -31,7 +31,8 @@ data "aws_iam_policy_document" "lambda_policy" {
     effect = "Allow"
     actions = [
       "ssm:GetParameter",
-      "kms:Decrypt"
+      "kms:Decrypt",
+      "secretsmanager:GetSecretValue"
     ]
 
     resources = ["*"]
