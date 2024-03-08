@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 
+	"github.com/jonleeyz/bbball8bot/internal/json"
 	"github.com/jonleeyz/bbball8bot/internal/logging"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -35,7 +36,7 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 	logging.Debugf("Event(s): %+v", event.Records)
 
 	for _, sqsMessage := range event.Records {
-		update, err := getTelegramUpdateFromSQSMessage(sqsMessage)
+		update, err := json.GetTelegramUpdateFromSQSMessage(sqsMessage)
 		if err != nil {
 			logging.Printf("error when unmarshaling SQS message: %v", err)
 		}
