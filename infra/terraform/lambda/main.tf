@@ -12,8 +12,8 @@ resource "aws_lambda_function" "bball8bot_event_handler" {
   environment {
     variables = {
       PARAMETERS_SECRETS_EXTENSION_CACHE_ENABLED = "true"
-      PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL     = "debug"
-      IS_DEBUG_LOGGING_ENABLED                   = "true"
+      PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL     = "info"
+      IS_DEBUG_LOGGING_ENABLED                   = "false"
     }
   }
 }

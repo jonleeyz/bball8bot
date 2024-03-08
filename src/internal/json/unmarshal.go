@@ -26,7 +26,6 @@ func GetTelegramUpdateFromSQSMessage(sqsMessage events.SQSMessage) (*tgbotapi.Up
 	logging.Debugf("Unmarshal destination post-unmarshal: %+v", destination)
 
 	update := &destination.Body
-	logging.Debugf("Update: %+v", update)
 	return update, nil
 }
 
