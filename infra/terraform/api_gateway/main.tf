@@ -14,7 +14,7 @@ resource "aws_api_gateway_method" "bball8bot" {
   rest_api_id = aws_api_gateway_rest_api.bball8bot.id
   resource_id = aws_api_gateway_resource.bball8bot.id
 
-  http_method   = "GET"
+  http_method   = "POST"
   authorization = "NONE"
 }
 
