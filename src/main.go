@@ -14,6 +14,9 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
+// isDebugLoggingEnabled toggles debug logging on if true, and false otherwise. Is read from the respective Lambda env var.
+var isDebugLoggingEnabled bool
+
 type SecretResponse struct {
 	SecretString string `json:"SecretString"`
 }
@@ -119,15 +122,4 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 func main() {
 	readDebugLoggingFlag()
 	lambda.Start(HandleRequest)
-}
-
-var isDebugLoggingEnabled bool
-
-func readDebugLoggingFlag() {
-	isDebugLoggingEnabledString, ok := os.LookupEnv("IS_DEBUG_LOGGING_ENABLED")
-	log.Printf("isDebugLoggingEnabled: %s; ok: %v", isDebugLoggingEnabledString, ok)
-
-	if isDebugLoggingEnabledString == "true" && ok {
-		isDebugLoggingEnabled = true
-	}
 }
