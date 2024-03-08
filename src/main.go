@@ -18,6 +18,19 @@ type SecretResponse struct {
 	SecretString string `json:"SecretString"`
 }
 
+type RecordBody struct {
+	Method      string          `json:"method"`
+	Body        tgbotapi.Update `json:"body-json"`
+	QueryParams QueryParams     `json:"queryParams"`
+	PathParams  PathParms       `json:"pathParams"`
+}
+
+type QueryParams struct {
+}
+
+type PathParms struct {
+}
+
 // getBotToken requests the Telegram bot token from AWS Secrets Manager and returns it for use.
 // This implementation makes use of the AWS Parameters and Secrets Lambda Extension and only works when a Lambda function
 // executes it.
@@ -67,21 +80,22 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 	}
 
 	logInManualDebugMode("Number of records in event: %d", len(event.Records))
-	logInManualDebugMode("Eevent: %v", event.Records)
+	logInManualDebugMode("Event: %v", event.Records)
 
 	for _, record := range event.Records {
-		var update tgbotapi.Update
+		var recordBody RecordBody
 
-		logInManualDebugMode("Update object value pre-unmarshal: %v", update)
+		logInManualDebugMode("Record body unmarshal object value pre-unmarshal: %v", recordBody)
 		logInManualDebugMode("Record body raw string pre-unmarshal: %s", record.Body)
 
-		if err := json.Unmarshal([]byte(record.Body), &update); err != nil {
+		if err := json.Unmarshal([]byte(record.Body), &recordBody); err != nil {
 			log.Printf("error while unmarshaling Telegram Update object: %v", err)
 			continue
 		}
 
-		logInManualDebugMode("Update object value pre-unmarshal: %v", update)
+		logInManualDebugMode("Record body unmarshal object value post-unmarshal: %v", recordBody)
 
+		update := recordBody.Body
 		logInManualDebugMode("Update: %v", update)
 
 		// if _, err := bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)); err != nil {
