@@ -7,6 +7,7 @@ resource "aws_lambda_function" "bball8bot_event_handler" {
   runtime          = "provided.al2023"
   filename         = local.output_archive_path
   source_code_hash = data.archive_file.zipped_binary_for_deploy.output_base64sha256
+  layers           = [local.parameters_and_secrets_extension_layer_arn]
 }
 
 ##### Enables Lambda event handler to be triggered by SQS events
