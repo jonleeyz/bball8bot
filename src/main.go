@@ -75,32 +75,32 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 
 	bot, err := tgbotapi.NewBotAPI(token)
 	if err != nil {
-		log.Fatalf("error when creating Telegram bot: %v", err)
+		log.Fatalf("error when creating Telegram bot object: %v", err)
 		return err
 	}
 
 	logInManualDebugMode("Number of records in event: %d", len(event.Records))
-	logInManualDebugMode("Event: %v", event.Records)
+	logInManualDebugMode("Event(s): %+v", event.Records)
 
 	for _, record := range event.Records {
 		var recordBodyUnmarshalDestination RecordBody
 
-		logInManualDebugMode("Record body unmarshal object value pre-unmarshal: %v", recordBodyUnmarshalDestination)
-		logInManualDebugMode("Record body raw string pre-unmarshal: %s", record.Body)
+		logInManualDebugMode("Event record output pre-unmarshal: %+v", recordBodyUnmarshalDestination)
+		logInManualDebugMode("Event record input pre-unmarshal: %s", record.Body)
 
 		// slice off last char in record.Body; record.Body is invalid json due to extra lagging " char
 		recordBodySourceSnipped := record.Body[:len(record.Body)-1]
-		logInManualDebugMode("Record body input snipped pre-unmarshal: %s", record.Body)
+		logInManualDebugMode("Event record input pre-unmarshal snipped: %s", record.Body)
 
 		if err := json.Unmarshal([]byte(recordBodySourceSnipped), &recordBodyUnmarshalDestination); err != nil {
-			log.Printf("error while unmarshaling Telegram Update object: %v", err)
+			log.Printf("error when unmarshaling Telegram Update object: %v", err)
 			continue
 		}
 
-		logInManualDebugMode("Record body unmarshal object value post-unmarshal: %v", recordBodyUnmarshalDestination)
+		logInManualDebugMode("Event record output post-unmarshal: %+v", recordBodyUnmarshalDestination)
 
 		update := recordBodyUnmarshalDestination.Body
-		logInManualDebugMode("Update: %v", update)
+		logInManualDebugMode("Update: %+v", update)
 
 		// if _, err := bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)); err != nil {
 		chattable := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
@@ -110,8 +110,8 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 			continue
 		}
 
-		logInManualDebugMode("Chattable object: %v", chattable)
-		logInManualDebugMode("bot.Send outcome: %v", sendOutcome)
+		logInManualDebugMode("Chattable object: %+v", chattable)
+		logInManualDebugMode("bot.Send outcome: %+v", sendOutcome)
 	}
 	return nil
 }
@@ -125,6 +125,8 @@ var isDebugLoggingEnabled bool
 
 func readDebugLoggingFlag() {
 	isDebugLoggingEnabledString, ok := os.LookupEnv("IS_DEBUG_LOGGING_ENABLED")
+	log.Printf("isDebugLoggingEnabled: %s; ok: %v", isDebugLoggingEnabledString, ok)
+
 	if isDebugLoggingEnabledString == "true" && ok {
 		isDebugLoggingEnabled = true
 	}
