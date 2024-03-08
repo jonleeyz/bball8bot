@@ -40,6 +40,8 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 		update, err := json.GetTelegramUpdateFromSQSMessage(sqsMessage)
 		if err != nil {
 			logging.Printf("error when unmarshaling SQS message: %v", err)
+		} else {
+			logging.Printf("Update: %+v", update)
 		}
 
 		if _, err := bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)); err != nil {
