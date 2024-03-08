@@ -18,6 +18,19 @@ type SecretResponse struct {
 	SecretString string `json:"SecretString"`
 }
 
+type RecordBody struct {
+	Method      string          `json:"method"`
+	Body        tgbotapi.Update `json:"body-json"`
+	QueryParams QueryParams     `json:"queryParams"`
+	PathParams  PathParms       `json:"pathParams"`
+}
+
+type QueryParams struct {
+}
+
+type PathParms struct {
+}
+
 // getBotToken requests the Telegram bot token from AWS Secrets Manager and returns it for use.
 // This implementation makes use of the AWS Parameters and Secrets Lambda Extension and only works when a Lambda function
 // executes it.
