@@ -1,4 +1,4 @@
-package bball8bot
+package main
 
 import (
 	"context"
