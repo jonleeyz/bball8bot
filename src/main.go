@@ -4,15 +4,15 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 
+	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-)
 
-type MyEvent struct {
-	Name string `json:"name"`
-}
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+)
 
 type SecretResponse struct {
 	SecretString string `json:"SecretString"`
@@ -47,12 +47,40 @@ func getBotToken() (string, error) {
 	return secret.SecretString, nil
 }
 
-func HandleRequest(ctx context.Context, event *MyEvent) (*string, error) {
+func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 	if event == nil {
-		return nil, fmt.Errorf("received nil event")
+		errString := "error: event is nil"
+		log.Fatal(errString)
+		return fmt.Errorf(errString)
 	}
-	message := fmt.Sprintf("Hello %s!", event.Name)
-	return &message, nil
+
+	token, err := getBotToken()
+	if err != nil {
+		log.Fatalf("error when retrieving Telegram bot token: %v", err)
+		return err
+	}
+
+	bot, err := tgbotapi.NewBotAPI(token)
+	if err != nil {
+		log.Fatalf("error when creating Telegram bot: %v", err)
+		return err
+	}
+
+	log.Printf("handler log: %v\n", event.Records)
+
+	for _, record := range event.Records {
+		var update tgbotapi.Update
+		if err := json.Unmarshal([]byte(record.Body), &update); err != nil {
+			log.Println(err)
+			continue
+		}
+
+		if _, err := bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)); err != nil {
+			log.Println(err)
+			continue
+		}
+	}
+	return nil
 }
 
 func main() {
