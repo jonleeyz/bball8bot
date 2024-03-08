@@ -80,7 +80,7 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 	}
 
 	logInManualDebugMode("Number of records in event: %d", len(event.Records))
-	logInManualDebugMode("Eevent: %v", event.Records)
+	logInManualDebugMode("Event: %v", event.Records)
 
 	for _, record := range event.Records {
 		var recordBody RecordBody
