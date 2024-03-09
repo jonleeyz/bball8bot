@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
 // isDebugLoggingEnabled toggles debug logging on if true, and false otherwise. Is read from the respective Lambda env var.
@@ -43,4 +45,15 @@ func Debugf(message string, debugObjects ...interface{}) {
 
 	debugLog := fmt.Sprintf(message, debugObjects...)
 	log.Printf("[MANUAL_DEBUG_LOG] %s", debugLog)
+}
+
+func LogUpdateObject(update tgbotapi.Update) {
+	Printf("Update: %+v", update)
+	Printf("Update - Message payload: %+v", *(update.Message))
+	Printf("Update - EditedMessage payload: %+v", *(update.EditedMessage))
+	Printf("Update - InlineQuery payload: %+v", *(update.InlineQuery))
+	Printf("Update - ChosenInlineResult payload: %+v", *(update.ChosenInlineResult))
+	Printf("Update - CallbackQuery payload: %+v", *(update.CallbackQuery))
+	Printf("Update - Poll payload: %+v", *(update.Poll))
+	Printf("Update - PollAnswer payload: %+v", *(update.PollAnswer))
 }
