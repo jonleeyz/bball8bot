@@ -41,7 +41,7 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 		if err != nil {
 			logging.Printf("error when unmarshaling SQS message: %v", err)
 		} else {
-			logging.Printf("Update: %+v", update)
+			logging.LogUpdateObject(*update)
 		}
 
 		// set message to be reply to original message
