@@ -12,25 +12,27 @@ import (
 
 // GetTelegramUpdateFromRecord unmarshals an SQS message and returns the contained Telegram update.
 func GetTelegramUpdateFromSQSMessage(sqsMessage events.SQSMessage) (*tgbotapi.Update, error) {
-	var destination RecordBody
-
-	logging.Debugf("SQS message body pre-unmarshal: %s", sqsMessage.Body)
+	// 1. Formatting SQS Message body payload for unmarshal
+	payload := sqsMessage.Body
+	logging.Debugf("SQS message body pre-unmarshal: %s", payload)
 	// slice off last char in record.Body; record.Body is invalid json due to extra lagging " char
-	sqsMessageBody := sqsMessage.Body[:len(sqsMessage.Body)-1]
-	logging.Debugf("SQS message body without quote pre-unmarshal: %s", sqsMessageBody)
+	payload = payload[:len(payload)-1]
+	logging.Debugf("SQS message body without quote pre-unmarshal: %s", payload)
 
-	if err := json.Unmarshal([]byte(sqsMessageBody), &destination); err != nil {
+	// 2. Execute unmarshal
+	var unmarshaledSQSMessageBody SQSMessageBody
+	if err := json.Unmarshal([]byte(payload), &unmarshaledSQSMessageBody); err != nil {
 		logging.Printf("error when unmarshaling Telegram Update object: %v", err)
 		return nil, err
 	}
-	logging.Debugf("Unmarshal destination post-unmarshal: %+v", destination)
+	logging.Debugf("Unmarshal sqsMessageBody post-unmarshal: %+v", unmarshaledSQSMessageBody)
 
-	update := &destination.Body
-	return update, nil
+	// 3. Return Update object
+	return &unmarshaledSQSMessageBody.Body, nil
 }
 
-// RecordBody is the unmarshal destination for an SQSEvent.Record.Body
-type RecordBody struct {
+// SQSMessageBody is the unmarshal destination for an SQSMessage.Body JSON payload.
+type SQSMessageBody struct {
 	Method      string          `json:"method"`
 	Body        tgbotapi.Update `json:"body-json"`
 	QueryParams QueryParams     `json:"queryParams"`
