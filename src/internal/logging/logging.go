@@ -49,11 +49,11 @@ func Debugf(message string, debugObjects ...interface{}) {
 
 func LogUpdateObject(update tgbotapi.Update) {
 	Printf("Update: %+v", update)
-	Printf("Update - Message payload: %+v", *(update.Message))
-	Printf("Update - EditedMessage payload: %+v", *(update.EditedMessage))
-	Printf("Update - InlineQuery payload: %+v", *(update.InlineQuery))
-	Printf("Update - ChosenInlineResult payload: %+v", *(update.ChosenInlineResult))
-	Printf("Update - CallbackQuery payload: %+v", *(update.CallbackQuery))
-	Printf("Update - Poll payload: %+v", *(update.Poll))
-	Printf("Update - PollAnswer payload: %+v", *(update.PollAnswer))
+	Printf("Update - Message payload: %+v", update.Message)
+	Printf("Update - EditedMessage payload: %+v", update.EditedMessage)
+	Printf("Update - InlineQuery payload: %+v", update.InlineQuery)
+	Printf("Update - ChosenInlineResult payload: %+v", update.ChosenInlineResult)
+	Printf("Update - CallbackQuery payload: %+v", update.CallbackQuery)
+	Printf("Update - Poll payload: %+v", update.Poll)
+	Printf("Update - PollAnswer payload: %+v", update.PollAnswer)
 }
