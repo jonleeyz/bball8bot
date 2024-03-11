@@ -25,7 +25,7 @@ func HandleBotCommand(ctx context.Context, bot *tgbotapi.BotAPI, update *tgbotap
 
 // Init intialises a command handler with references to an initialised Bot API and the input Update object.
 func (c *CommandHandlerImpl) Init(bot *tgbotapi.BotAPI, update *tgbotapi.Update) error {
-	if bot != nil {
+	if bot == nil {
 		return fmt.Errorf("error when initialising /%s command handler: input BotAPI object is nil", c.command)
 	}
 	c.bot = bot
