@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 
+	"github.com/jonleeyz/bbball8bot/internal/commands"
 	"github.com/jonleeyz/bbball8bot/internal/json"
 	"github.com/jonleeyz/bbball8bot/internal/logging"
 	"github.com/jonleeyz/bbball8bot/internal/secrets"
@@ -44,7 +45,12 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 			logging.LogUpdateObject(*update)
 		}
 
-		// set message to be reply to original message
+		// if message is command, call command handler
+		if update.Message.IsCommand() {
+			return commands.HandleBotCommand(ctx, bot, update)
+		}
+
+		// if message is not command, echo message as reply to original message
 		newReply := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
 		newReply.BaseChat.ReplyToMessageID = update.Message.MessageID
 		if _, err := bot.Send(newReply); err != nil {
