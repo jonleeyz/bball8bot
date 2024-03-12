@@ -33,4 +33,4 @@ func buildTrainingPollMessageContent(ctx context.Context, update *tgbotapi.Updat
 	return baseContent, nil
 }
 
-const TRAINING_POLL_TEMPLATE = "Training: %s, %s @ %s\n---\n\n\nAttending:\n\n\nNot attending:\n\n\nChecking availability:\n\n\nYet to respond:\n\n\n"
+const TRAINING_POLL_TEMPLATE = "**Training: %s, %s @ %s**\n---\n\n\n**Attending:**\n\n\n**Not attending:**\n\n\n**Checking availability:**\n\n\n**Yet to respond:**\n\n\n"
