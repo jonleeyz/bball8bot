@@ -3,6 +3,7 @@ package commands
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/jonleeyz/bbball8bot/internal/logging"
 
@@ -37,7 +38,9 @@ func buildTrainingPollMessageContent(ctx context.Context, update *tgbotapi.Updat
 		locationContent string = "NTU"
 	)
 	populatedTrainingPollTemplate := fmt.Sprintf(TRAINING_POLL_TEMPLATE, dayContent, dateContent, timeContent, locationContent)
-	return populatedTrainingPollTemplate, nil
+
+	escapeDashPopulatedTrainingPollTemplate := strings.Replace(populatedTrainingPollTemplate, "-", "\\-", -1)
+	return escapeDashPopulatedTrainingPollTemplate, nil
 }
 
 const TRAINING_POLL_TEMPLATE = "*bold \\* Training: %s, %s, %s @ %s*\n---\n\n\n*bold \\*Attending:*\n\n\n*bold \\*Not attending:*\n\n\n*bold \\*Checking availability:*\n\n\n*bold \\*Yet to respond:*\n\n\n"
