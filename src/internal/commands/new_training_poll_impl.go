@@ -17,6 +17,7 @@ func (h *NewTrainingPollCommandHandlerImpl) Handle(ctx context.Context) error {
 	}
 
 	trainingPollMessageResponse := tgbotapi.NewMessage(h.update.Message.Chat.ID, trainingPollMessageContent)
+	trainingPollMessageResponse.ParseMode = "MarkdownV2"
 
 	if _, err := h.bot.Send(trainingPollMessageResponse); err != nil {
 		err = fmt.Errorf("error when calling Telegram Bot API to send message: %v", err)
@@ -39,4 +40,4 @@ func buildTrainingPollMessageContent(ctx context.Context, update *tgbotapi.Updat
 	return populatedTrainingPollTemplate, nil
 }
 
-const TRAINING_POLL_TEMPLATE = "**Training: %s, %s, %s @ %s**\n---\n\n\n**Attending:**\n\n\n**Not attending:**\n\n\n**Checking availability:**\n\n\n**Yet to respond:**\n\n\n"
+const TRAINING_POLL_TEMPLATE = "*bold \\* Training: %s, %s, %s @ %s*\n---\n\n\n*bold \\*Attending:*\n\n\n*bold \\*Not attending:*\n\n\n*bold \\*Checking availability:*\n\n\n*bold \\*Yet to respond:*\n\n\n"
