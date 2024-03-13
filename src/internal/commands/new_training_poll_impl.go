@@ -17,6 +17,7 @@ func (h *NewTrainingPollCommandHandlerImpl) Handle(ctx context.Context) error {
 	}
 
 	trainingPollMessageResponse := tgbotapi.NewMessage(h.update.Message.Chat.ID, trainingPollMessageContent)
+	trainingPollMessageResponse.ParseMode = "MarkdownV2"
 
 	if _, err := h.bot.Send(trainingPollMessageResponse); err != nil {
 		err = fmt.Errorf("error when calling Telegram Bot API to send message: %v", err)
