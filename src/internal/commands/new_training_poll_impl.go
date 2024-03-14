@@ -43,22 +43,4 @@ func buildTrainingPollMessageContent(ctx context.Context, update *tgbotapi.Updat
 	return escapeDashPopulatedTrainingPollTemplate, nil
 }
 
-const TRAINING_POLL_TEMPLATE = `*Training*
-*%s, %s, %s*
-%s*
----
-
-
-*Attending:*
-
-
-*Not attending:*
-
-
-*Checking availability:*
-
-
-*Yet to respond:*
-
-
-`
+const TRAINING_POLL_TEMPLATE = "*Training: %s, %s, %s @ %s*\n---\n\n\n*Attending:*\n\n\n*Not attending:*\n\n\n*Checking availability:*\n\n\n*Yet to respond:*\n\n\n"
