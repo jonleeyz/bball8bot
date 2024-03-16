@@ -5,7 +5,8 @@ import (
 )
 
 const (
-	BOT_COMMAND_START = "start"
+	BOT_COMMAND_START             = "start"
+	BOT_COMMAND_NEW_TRAINING_POLL = "newtrainingpoll"
 )
 
 var (
@@ -14,6 +15,11 @@ var (
 		BOT_COMMAND_START: &StartCommandHandlerImpl{
 			CommandHandlerImpl: CommandHandlerImpl{
 				command: BOT_COMMAND_START,
+			},
+		},
+		BOT_COMMAND_NEW_TRAINING_POLL: &NewTrainingPollCommandHandlerImpl{
+			CommandHandlerImpl: CommandHandlerImpl{
+				command: BOT_COMMAND_NEW_TRAINING_POLL,
 			},
 		},
 	}
@@ -28,5 +34,10 @@ type CommandHandlerImpl struct {
 
 // StartCommandHandlerImpl is a CommandHandler interface implementation that handles the "/start" command.
 type StartCommandHandlerImpl struct {
+	CommandHandlerImpl
+}
+
+// NewTrainingPollCommandHandlerImpl is a CommandHandler interface implementation that handles the "/start" command.
+type NewTrainingPollCommandHandlerImpl struct {
 	CommandHandlerImpl
 }
