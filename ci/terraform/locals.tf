@@ -4,5 +4,4 @@ locals {
   infra_workspace_bucket_key_prd = "bball8bot/infra/prd/terraform.tfstate"
   ci_workspace_bucket_key        = "bball8bot/ci/terraform.tfstate"
   state_lock_table_arn           = "arn:aws:dynamodb:ap-southeast-1:574182556674:table/terraform_state_lock"
-  infra_workspace_bucket_key_old = "bball8bot/infra/terraform.tfstate"
 }
