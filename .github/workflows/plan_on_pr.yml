@@ -14,7 +14,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./infra/terraform
+        working-directory: ./infra/prd/terraform
     steps:
       - name: git checkout
         uses: actions/checkout@v4
@@ -27,7 +27,7 @@ jobs:
       - name: Build Lambda function handler Go executable
         id: go-build
         working-directory: ./src
-        run: GOOS=linux GOARCH=amd64 go build -tags lambda.norpc -o ../infra/terraform/bin/bootstrap -v main.go
+        run: GOOS=linux GOARCH=amd64 go build -tags lambda.norpc -o ../infra/prd/terraform/bin/bootstrap main.go
 
       - name: Assume CI AWS IAM role
         uses: aws-actions/configure-aws-credentials@v4
@@ -50,7 +50,7 @@ jobs:
         id: init
         env:
           AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
-          AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME_INFRA }}
+          AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME_INFRA_PRD }}
           AWS_STATE_LOCK_TABLE_NAME: ${{ secrets.AWS_STATE_LOCK_TABLE_NAME }}
         run: terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}" -backend-config="region=${AWS_REGION}" -backend-config="dynamodb_table=${AWS_STATE_LOCK_TABLE_NAME}"
 
