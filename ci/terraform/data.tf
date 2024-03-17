@@ -13,7 +13,7 @@ data "aws_iam_policy_document" "terraform_state_management_policy" {
     ]
 
     resources = [
-      "${local.state_store_bucket_arn}/${local.infra_workspace_bucket_key}",
+      "${local.state_store_bucket_arn}/${local.infra_workspace_bucket_key_prd}",
       "${local.state_store_bucket_arn}/${local.ci_workspace_bucket_key}"
     ]
   }
