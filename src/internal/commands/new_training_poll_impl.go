@@ -38,6 +38,12 @@ func buildTrainingPollMessageContent(ctx context.Context, update *tgbotapi.Updat
 		timeContent     string = "0915 - 1215"
 		locationContent string = "NTU"
 	)
+
+	upcomingSaturday := getUpcomingDate(time.Saturday)
+	dayContent = upcomingSaturday.Weekday().String()
+	y, m, d := upcomingSaturday.Date()
+	dateContent = fmt.Sprintf("%s %d, %d", m, d, y)
+
 	populatedTrainingPollTemplate := fmt.Sprintf(TRAINING_POLL_TEMPLATE, dayContent, dateContent, timeContent, locationContent)
 
 	escapeDashPopulatedTrainingPollTemplate := strings.Replace(populatedTrainingPollTemplate, "-", "\\-", -1)
