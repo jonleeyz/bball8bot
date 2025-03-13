@@ -61,4 +61,11 @@ func getUpcomingDate(targetWeekday time.Weekday) time.Time {
 	return currentDateTime.AddDate(0, 0, int(weekdayDiff))
 }
 
+type trainingPollContent struct {
+	day      string
+	date     string
+	time     string
+	location string
+}
+
 const TRAINING_POLL_TEMPLATE = "*Regular practice\n%s, %s, \n%s\n%s*\n==========\n\n\n*Attending:*\n\n\n*Not attending:*\n\n\n*Checking availability:*\n\n\n*Yet to respond:*\n\n\n"
