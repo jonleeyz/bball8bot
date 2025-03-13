@@ -50,6 +50,20 @@ func buildTrainingPollMessageContent(ctx context.Context, update *tgbotapi.Updat
 	return escapeDashPopulatedTrainingPollTemplate, nil
 }
 
+// generateTrainingPollContent returns a trainingPollContent object, complete with generated content.
+// For now, time and location are hardcoded.
+func generateTrainingPollContent(targetWeekday time.Weekday) trainingPollContent {
+	upcomingDateObject := getUpcomingDate(targetWeekday)
+	y, m, d := upcomingDateObject.Date()
+
+	return trainingPollContent{
+		day:      upcomingDateObject.Weekday().String(),
+		date:     fmt.Sprintf("%s %d, %d", m, d, y),
+		time:     "0915 - 1215",      // TODO: Update, hardcoded for now
+		location: "NTU Upper Fields", // TODO: Update, hardcoded for now
+	}
+}
+
 // getUpcomingDate returns the date of the next upcoming specified weekday.
 func getUpcomingDate(targetWeekday time.Weekday) time.Time {
 	currentDateTime := time.Now()
