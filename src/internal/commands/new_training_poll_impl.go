@@ -64,6 +64,14 @@ func getUpcomingDate(targetWeekday time.Weekday) time.Time {
 	return currentDateTime.AddDate(0, 0, int(weekdayDiff))
 }
 
+// addEscapeTokens adds "//" characters so the input training poll message content string can be parsed correctly
+// by Telegram's Bot API.
+func addEscapeTokens(trainingPollMessageContent string) string {
+	trainingPollMessageContent = strings.Replace(trainingPollMessageContent, "-", "\\-", -1)
+	trainingPollMessageContent = strings.Replace(trainingPollMessageContent, "=", "\\=", -1)
+	return trainingPollMessageContent
+}
+
 type trainingPollContent struct {
 	day      string
 	date     string
