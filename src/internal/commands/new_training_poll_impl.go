@@ -33,10 +33,8 @@ func (h *NewTrainingPollCommandHandlerImpl) Handle(ctx context.Context) error {
 // buildTrainingPollMessageContent builds the content string for a training poll message.
 func buildTrainingPollMessageContent(ctx context.Context, update *tgbotapi.Update) (string, error) {
 	content := generateTrainingPollContent(time.Saturday)
-	populatedTrainingPollTemplate := fmt.Sprintf(TRAINING_POLL_TEMPLATE, content.day, content.date, content.time, content.location)
-
-	escapeDashPopulatedTrainingPollTemplate := strings.Replace(populatedTrainingPollTemplate, "-", "\\-", -1)
-	return escapeDashPopulatedTrainingPollTemplate, nil
+	trainingPollMessageContent := fmt.Sprintf(TRAINING_POLL_TEMPLATE, content.day, content.date, content.time, content.location)
+	return addEscapeTokens(trainingPollMessageContent), nil
 }
 
 // generateTrainingPollContent returns a trainingPollContent object, complete with generated content.
@@ -62,6 +60,14 @@ func getUpcomingDate(targetWeekday time.Weekday) time.Time {
 	}
 
 	return currentDateTime.AddDate(0, 0, int(weekdayDiff))
+}
+
+// addEscapeTokens adds "//" characters so the input training poll message content string can be parsed correctly
+// by Telegram's Bot API.
+func addEscapeTokens(trainingPollMessageContent string) string {
+	trainingPollMessageContent = strings.Replace(trainingPollMessageContent, "-", "\\-", -1)
+	trainingPollMessageContent = strings.Replace(trainingPollMessageContent, "=", "\\=", -1)
+	return trainingPollMessageContent
 }
 
 type trainingPollContent struct {
