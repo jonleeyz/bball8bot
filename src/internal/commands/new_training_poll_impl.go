@@ -32,19 +32,8 @@ func (h *NewTrainingPollCommandHandlerImpl) Handle(ctx context.Context) error {
 
 // buildTrainingPollMessageContent builds the content string for a training poll message.
 func buildTrainingPollMessageContent(ctx context.Context, update *tgbotapi.Update) (string, error) {
-	var (
-		dayContent      string = "Saturday"
-		dateContent     string = "Mar 16, 2024"
-		timeContent     string = "0915 - 1215"
-		locationContent string = "NTU"
-	)
-
-	upcomingSaturday := getUpcomingDate(time.Saturday)
-	dayContent = upcomingSaturday.Weekday().String()
-	y, m, d := upcomingSaturday.Date()
-	dateContent = fmt.Sprintf("%s %d, %d", m, d, y)
-
-	populatedTrainingPollTemplate := fmt.Sprintf(TRAINING_POLL_TEMPLATE, dayContent, dateContent, timeContent, locationContent)
+	content := generateTrainingPollContent(time.Saturday)
+	populatedTrainingPollTemplate := fmt.Sprintf(TRAINING_POLL_TEMPLATE, content.day, content.date, content.time, content.location)
 
 	escapeDashPopulatedTrainingPollTemplate := strings.Replace(populatedTrainingPollTemplate, "-", "\\-", -1)
 	return escapeDashPopulatedTrainingPollTemplate, nil
