@@ -33,10 +33,8 @@ func (h *NewTrainingPollCommandHandlerImpl) Handle(ctx context.Context) error {
 // buildTrainingPollMessageContent builds the content string for a training poll message.
 func buildTrainingPollMessageContent(ctx context.Context, update *tgbotapi.Update) (string, error) {
 	content := generateTrainingPollContent(time.Saturday)
-	populatedTrainingPollTemplate := fmt.Sprintf(TRAINING_POLL_TEMPLATE, content.day, content.date, content.time, content.location)
-
-	escapeDashPopulatedTrainingPollTemplate := strings.Replace(populatedTrainingPollTemplate, "-", "\\-", -1)
-	return escapeDashPopulatedTrainingPollTemplate, nil
+	trainingPollMessageContent := fmt.Sprintf(TRAINING_POLL_TEMPLATE, content.day, content.date, content.time, content.location)
+	return addEscapeTokens(trainingPollMessageContent), nil
 }
 
 // generateTrainingPollContent returns a trainingPollContent object, complete with generated content.
