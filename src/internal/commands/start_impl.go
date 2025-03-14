@@ -16,7 +16,7 @@ func (c *StartCommandHandlerImpl) Handle(ctx context.Context) error {
 	if _, err := c.bot.Send(startMessageResponse); err != nil {
 		err = fmt.Errorf("error when calling Telegram Bot API to send message: %v", err)
 
-		logging.Printf(err.Error())
+		logging.Infof(err.Error())
 		return err
 	}
 	return nil
