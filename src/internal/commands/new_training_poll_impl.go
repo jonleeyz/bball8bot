@@ -27,7 +27,7 @@ func (h *NewTrainingPollCommandHandlerImpl) Handle(ctx context.Context) error {
 	if _, err := h.bot.Send(trainingPollMessageResponse); err != nil {
 		logging.Errorf(
 			"error when calling Telegram Bot API to send /newtrainingpoll response.\n MessageConfig object: %+v",
-			trainingPollMessageContent,
+			trainingPollMessageResponse,
 		)
 		return err
 	}
@@ -66,6 +66,7 @@ func getUpcomingDate(targetWeekday time.Weekday) time.Time {
 	return currentDateTime.AddDate(0, 0, int(weekdayDiff))
 }
 
+// TODO: Consider using tgbotapi.EscapeText()
 // addEscapeTokens adds "//" characters so the input training poll message content string can be parsed correctly
 // by Telegram's Bot API.
 func addEscapeTokens(trainingPollMessageContent string) string {
