@@ -13,7 +13,7 @@ var IS_DEBUG_LOGGING_ENABLED bool
 
 func Init() {
 	isDebugLoggingEnabledString, ok := os.LookupEnv("IS_DEBUG_LOGGING_ENABLED")
-	Printf("[LAMBDA ENV VAR INIT] IS_DEBUG_LOGGING_ENABLED: %s; ok: %v", isDebugLoggingEnabledString, ok)
+	log.Printf("[LAMBDA ENV VAR INIT] IS_DEBUG_LOGGING_ENABLED: %s; ok: %v", isDebugLoggingEnabledString, ok)
 
 	if isDebugLoggingEnabledString == "true" && ok {
 		IS_DEBUG_LOGGING_ENABLED = true
