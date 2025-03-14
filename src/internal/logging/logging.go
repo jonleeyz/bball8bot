@@ -50,11 +50,11 @@ func Debugf(message string, debugObjects ...interface{}) {
 func LogUpdateObject(update tgbotapi.Update) {
 	Infof("Update: %+v", update)
 	// TODO: Maybe make these debug level logs
-	Infof("Update - Message payload: %+v", update.Message)
-	Infof("Update - EditedMessage payload: %+v", update.EditedMessage)
-	Infof("Update - InlineQuery payload: %+v", update.InlineQuery)
-	Infof("Update - ChosenInlineResult payload: %+v", update.ChosenInlineResult)
-	Infof("Update - CallbackQuery payload: %+v", update.CallbackQuery)
-	Infof("Update - Poll payload: %+v", update.Poll)
-	Infof("Update - PollAnswer payload: %+v", update.PollAnswer)
+	Debugf("Update - Message payload: %+v", update.Message)
+	Debugf("Update - EditedMessage payload: %+v", update.EditedMessage)
+	Debugf("Update - InlineQuery payload: %+v", update.InlineQuery)
+	Debugf("Update - ChosenInlineResult payload: %+v", update.ChosenInlineResult)
+	Debugf("Update - CallbackQuery payload: %+v", update.CallbackQuery)
+	Debugf("Update - Poll payload: %+v", update.Poll)
+	Debugf("Update - PollAnswer payload: %+v", update.PollAnswer)
 }
