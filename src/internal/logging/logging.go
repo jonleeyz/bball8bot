@@ -49,6 +49,7 @@ func Debugf(message string, debugObjects ...interface{}) {
 
 func LogUpdateObject(update tgbotapi.Update) {
 	Printf("Update: %+v", update)
+	// TODO: Maybe make these debug level logs
 	Printf("Update - Message payload: %+v", update.Message)
 	Printf("Update - EditedMessage payload: %+v", update.EditedMessage)
 	Printf("Update - InlineQuery payload: %+v", update.InlineQuery)
