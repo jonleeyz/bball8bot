@@ -97,3 +97,4 @@ type trainingPollContent struct {
 }
 
 const TRAINING_POLL_TEMPLATE = "*Regular practice\n%s, %s, \n%s\n%s*\n==========\n\n\n*Attending:*\n\n\n*Not attending:*\n\n\n*Checking availability:*\n\n\n*Yet to respond:*\n\n\n"
+const CALLBACK_QUERY_BUTTON_PRESSED = "CALLBACK_QUERY_BUTTON_PRESSED"
