@@ -19,7 +19,7 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 	if event == nil {
 		errMessage := "error: event is nil"
 		logging.Fatal(errMessage)
-		return fmt.Errorf(errMessage)
+		return fmt.Errorf("%s", errMessage)
 	}
 
 	token, err := secrets.GetBotToken()
