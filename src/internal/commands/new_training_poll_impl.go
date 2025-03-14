@@ -20,6 +20,7 @@ func (h *NewTrainingPollCommandHandlerImpl) Handle(ctx context.Context) error {
 
 	trainingPollMessageResponse := tgbotapi.NewMessage(h.update.Message.Chat.ID, trainingPollMessageContent)
 	trainingPollMessageResponse.ParseMode = "MarkdownV2"
+	trainingPollMessageResponse.ReplyMarkup = buildInlineKeyboard()
 
 	if _, err := h.bot.Send(trainingPollMessageResponse); err != nil {
 		err = fmt.Errorf("error when calling Telegram Bot API to send message: %v", err)
@@ -68,6 +69,20 @@ func addEscapeTokens(trainingPollMessageContent string) string {
 	trainingPollMessageContent = strings.Replace(trainingPollMessageContent, "-", "\\-", -1)
 	trainingPollMessageContent = strings.Replace(trainingPollMessageContent, "=", "\\=", -1)
 	return trainingPollMessageContent
+}
+
+// buildInlineKeyboard builds a basic inline keyboard for the training poll template messsage.
+func buildInlineKeyboard() tgbotapi.InlineKeyboardMarkup {
+	return tgbotapi.NewInlineKeyboardMarkup(
+		tgbotapi.NewInlineKeyboardRow(
+			tgbotapi.NewInlineKeyboardButtonData("test1", ""),
+			tgbotapi.NewInlineKeyboardButtonData("test2", ""),
+		),
+		tgbotapi.NewInlineKeyboardRow(
+			tgbotapi.NewInlineKeyboardButtonData("test3", ""),
+			tgbotapi.NewInlineKeyboardButtonData("test4", ""),
+		),
+	)
 }
 
 type trainingPollContent struct {
