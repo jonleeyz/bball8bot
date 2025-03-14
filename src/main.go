@@ -59,7 +59,6 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 		newReply.BaseChat.ReplyToMessageID = update.Message.MessageID
 		if _, err := bot.Send(newReply); err != nil {
 			logging.Printf("error when calling Telegram Bot API to send message: %v", err)
-			continue
 		}
 	}
 	return nil
