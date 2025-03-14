@@ -79,12 +79,12 @@ func addEscapeTokens(trainingPollMessageContent string) string {
 func buildInlineKeyboard() tgbotapi.InlineKeyboardMarkup {
 	return tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("test1", ""),
-			tgbotapi.NewInlineKeyboardButtonData("test2", ""),
+			tgbotapi.NewInlineKeyboardButtonData("test1", CALLBACK_QUERY_BUTTON_PRESSED),
+			tgbotapi.NewInlineKeyboardButtonData("test2", CALLBACK_QUERY_BUTTON_PRESSED),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("test3", ""),
-			tgbotapi.NewInlineKeyboardButtonData("test4", ""),
+			tgbotapi.NewInlineKeyboardButtonData("test3", CALLBACK_QUERY_BUTTON_PRESSED),
+			tgbotapi.NewInlineKeyboardButtonData("test4", CALLBACK_QUERY_BUTTON_PRESSED),
 		),
 	)
 }
