@@ -25,7 +25,11 @@ func (h *NewTrainingPollCommandHandlerImpl) Handle(ctx context.Context) error {
 	trainingPollMessageResponse.ReplyMarkup = buildInlineKeyboard()
 
 	if _, err := h.bot.Send(trainingPollMessageResponse); err != nil {
-		return fmt.Errorf("error when calling Telegram Bot API to send message: %v", err)
+		logging.Errorf(
+			"error when calling Telegram Bot API to send /newtrainingpoll response.\n MessageConfig object: %+v",
+			trainingPollMessageContent,
+		)
+		return err
 	}
 	return nil
 }
