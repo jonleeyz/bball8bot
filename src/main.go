@@ -19,7 +19,7 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 	if event == nil {
 		errMessage := "error: event is nil"
 		logging.Fatal(errMessage)
-		return fmt.Errorf(errMessage)
+		return fmt.Errorf("%s", errMessage)
 	}
 
 	token, err := secrets.GetBotToken()
@@ -45,6 +45,10 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 			logging.LogUpdateObject(*update)
 		}
 
+		if update.Message == nil {
+			continue
+		}
+
 		// if message is command, call command handler
 		if update.Message.IsCommand() {
 			return commands.HandleBotCommand(ctx, bot, update)
@@ -55,7 +59,6 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 		newReply.BaseChat.ReplyToMessageID = update.Message.MessageID
 		if _, err := bot.Send(newReply); err != nil {
 			logging.Printf("error when calling Telegram Bot API to send message: %v", err)
-			continue
 		}
 	}
 	return nil
