@@ -13,7 +13,7 @@ var IS_DEBUG_LOGGING_ENABLED bool
 
 func Init() {
 	isDebugLoggingEnabledString, ok := os.LookupEnv("IS_DEBUG_LOGGING_ENABLED")
-	Printf("[LAMBDA ENV VAR INIT] IS_DEBUG_LOGGING_ENABLED: %s; ok: %v", isDebugLoggingEnabledString, ok)
+	log.Printf("[LAMBDA ENV VAR INIT] IS_DEBUG_LOGGING_ENABLED: %s; ok: %v", isDebugLoggingEnabledString, ok)
 
 	if isDebugLoggingEnabledString == "true" && ok {
 		IS_DEBUG_LOGGING_ENABLED = true
@@ -22,8 +22,8 @@ func Init() {
 	}
 }
 
-// Printf is a syntatic wrapper around the log.Printf function.
-func Printf(message string, debugObjects ...interface{}) {
+// Infof is a syntatic wrapper around the log.Printf function.
+func Infof(message string, debugObjects ...interface{}) {
 	log.Printf(message, debugObjects...)
 }
 
@@ -48,13 +48,13 @@ func Debugf(message string, debugObjects ...interface{}) {
 }
 
 func LogUpdateObject(update tgbotapi.Update) {
-	Printf("Update: %+v", update)
+	Infof("Update: %+v", update)
 	// TODO: Maybe make these debug level logs
-	Printf("Update - Message payload: %+v", update.Message)
-	Printf("Update - EditedMessage payload: %+v", update.EditedMessage)
-	Printf("Update - InlineQuery payload: %+v", update.InlineQuery)
-	Printf("Update - ChosenInlineResult payload: %+v", update.ChosenInlineResult)
-	Printf("Update - CallbackQuery payload: %+v", update.CallbackQuery)
-	Printf("Update - Poll payload: %+v", update.Poll)
-	Printf("Update - PollAnswer payload: %+v", update.PollAnswer)
+	Debugf("Update - Message payload: %+v", update.Message)
+	Debugf("Update - EditedMessage payload: %+v", update.EditedMessage)
+	Debugf("Update - InlineQuery payload: %+v", update.InlineQuery)
+	Debugf("Update - ChosenInlineResult payload: %+v", update.ChosenInlineResult)
+	Debugf("Update - CallbackQuery payload: %+v", update.CallbackQuery)
+	Debugf("Update - Poll payload: %+v", update.Poll)
+	Debugf("Update - PollAnswer payload: %+v", update.PollAnswer)
 }
