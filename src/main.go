@@ -40,7 +40,7 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 	for _, sqsMessage := range event.Records {
 		update, err := json.GetTelegramUpdateFromSQSMessage(sqsMessage)
 		if err != nil {
-			logging.Printf("error when unmarshaling SQS message: %v", err)
+			logging.Infof("error when unmarshaling SQS message: %v", err)
 		} else {
 			logging.LogUpdateObject(*update)
 		}
@@ -58,7 +58,7 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 		newReply := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
 		newReply.BaseChat.ReplyToMessageID = update.Message.MessageID
 		if _, err := bot.Send(newReply); err != nil {
-			logging.Printf("error when calling Telegram Bot API to send message: %v", err)
+			logging.Infof("error when calling Telegram Bot API to send message: %v", err)
 		}
 	}
 	return nil

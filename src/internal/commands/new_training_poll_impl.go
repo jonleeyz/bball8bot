@@ -25,7 +25,7 @@ func (h *NewTrainingPollCommandHandlerImpl) Handle(ctx context.Context) error {
 	if _, err := h.bot.Send(trainingPollMessageResponse); err != nil {
 		err = fmt.Errorf("error when calling Telegram Bot API to send message: %v", err)
 
-		logging.Printf(err.Error())
+		logging.Infof(err.Error())
 		return err
 	}
 	return nil
