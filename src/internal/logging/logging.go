@@ -37,6 +37,12 @@ func Fatalf(errMessage string, debugObjects ...interface{}) {
 	log.Fatalf(errMessage, debugObjects...)
 }
 
+// Errorf is a syntatic wrapper around the log.Printf function that creates a log entry with error tags.
+func Errorf(errMessage string, debugObjects ...interface{}) {
+	errorLog := fmt.Errorf(errMessage, debugObjects...)
+	log.Printf("[ERROR] %s", errorLog)
+}
+
 // Debugf is a syntatic wrapper around the log.Printf function that creates a log entry with debug tags.
 func Debugf(message string, debugObjects ...interface{}) {
 	if !IS_DEBUG_LOGGING_ENABLED {
