@@ -45,6 +45,10 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 			logging.LogUpdateObject(*update)
 		}
 
+		if update.Message == nil {
+			continue
+		}
+
 		// if message is command, call command handler
 		if update.Message.IsCommand() {
 			return commands.HandleBotCommand(ctx, bot, update)
