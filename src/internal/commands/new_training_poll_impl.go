@@ -70,6 +70,20 @@ func addEscapeTokens(trainingPollMessageContent string) string {
 	return trainingPollMessageContent
 }
 
+// buildInlineKeyboard builds a basic inline keyboard for the training poll template messsage.
+func buildInlineKeyboard() tgbotapi.InlineKeyboardMarkup {
+	return tgbotapi.NewInlineKeyboardMarkup(
+		tgbotapi.NewInlineKeyboardRow(
+			tgbotapi.NewInlineKeyboardButtonData("test1", ""),
+			tgbotapi.NewInlineKeyboardButtonData("test2", ""),
+		),
+		tgbotapi.NewInlineKeyboardRow(
+			tgbotapi.NewInlineKeyboardButtonData("test3", ""),
+			tgbotapi.NewInlineKeyboardButtonData("test4", ""),
+		),
+	)
+}
+
 type trainingPollContent struct {
 	day      string
 	date     string
