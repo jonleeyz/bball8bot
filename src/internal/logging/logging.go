@@ -50,7 +50,7 @@ func Debugf(message string, debugObjects ...interface{}) {
 	}
 
 	debugLog := fmt.Sprintf(message, debugObjects...)
-	log.Printf("[MANUAL_DEBUG_LOG] %s", debugLog)
+	log.Printf("[DEBUG] %s", debugLog)
 }
 
 func LogUpdateObject(update tgbotapi.Update) {
