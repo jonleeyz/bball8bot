@@ -18,6 +18,8 @@ func (h *NewTrainingPollCommandHandlerImpl) Handle(ctx context.Context) error {
 		return err
 	}
 
+	logging.Debugf("Update.Message.ChatID: %d", h.update.Message.Chat.ID)
+
 	trainingPollMessageResponse := tgbotapi.NewMessage(h.update.Message.Chat.ID, trainingPollMessageContent)
 	trainingPollMessageResponse.ParseMode = "MarkdownV2"
 	trainingPollMessageResponse.ReplyMarkup = buildInlineKeyboard()
