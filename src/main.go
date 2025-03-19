@@ -68,7 +68,11 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 
 		// if message is command, call command handler
 		if update.Message.IsCommand() {
-			return commands.HandleBotCommand(ctx, bot, update)
+			if err := commands.HandleBotCommand(ctx, bot, update); err != nil {
+				// TODO @jonlee: Tidy this log statement
+				logging.Errorf("TEMP TOP level log: %v", err)
+				continue
+			}
 		}
 
 		// if message is not command, echo message as reply to original message
