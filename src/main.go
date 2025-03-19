@@ -52,7 +52,7 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 		if update.CallbackQuery != nil {
 			callback := update.CallbackQuery
 			callbackResponseString := fmt.Sprintf("button pressed: %s", callback.Data)
-			callbackTemplateReply := tgbotapi.NewMessage(update.Message.Chat.ID, callbackResponseString)
+			callbackTemplateReply := tgbotapi.NewMessage(callback.From.ID, callbackResponseString)
 			bot.Send(callbackTemplateReply)
 
 			callbackAnswer := tgbotapi.NewCallbackWithAlert(callback.ID, callbackResponseString)
