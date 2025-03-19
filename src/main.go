@@ -29,6 +29,8 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 	}
 
 	bot, err := tgbotapi.NewBotAPI(token)
+	// TODO @jonlee: Refactor this into a proper config module
+	bot.Debug = logging.IS_DEBUG_LOGGING_ENABLED
 	if err != nil {
 		logging.Fatalf("error when creating Telegram bot object: %v", err)
 		return err
