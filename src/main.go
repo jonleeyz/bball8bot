@@ -40,7 +40,8 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 	for _, sqsMessage := range event.Records {
 		update, err := json.GetTelegramUpdateFromSQSMessage(sqsMessage)
 		if err != nil {
-			logging.Infof("error when unmarshaling SQS message: %v", err)
+			logging.Errorf("error when unmarshaling SQS message: %v", err)
+			continue
 		} else {
 			logging.LogUpdateObject(*update)
 		}
