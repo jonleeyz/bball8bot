@@ -40,9 +40,24 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 	for _, sqsMessage := range event.Records {
 		update, err := json.GetTelegramUpdateFromSQSMessage(sqsMessage)
 		if err != nil {
-			logging.Infof("error when unmarshaling SQS message: %v", err)
+			logging.Errorf("error when unmarshaling SQS message: %v", err)
+			continue
 		} else {
 			logging.LogUpdateObject(*update)
+		}
+
+		// TODO @jonlee: Update, placeholder, just to ensure that callback queries are answered.
+		if update.CallbackQuery != nil {
+			callback := update.CallbackQuery
+			callbackResponseString := fmt.Sprintf("button pressed: %s", callback.Data)
+			callbackTemplateReply := tgbotapi.NewMessage(update.Message.Chat.ID, callbackResponseString)
+			bot.Send(callbackTemplateReply)
+
+			callbackAnswer := tgbotapi.NewCallbackWithAlert(callback.ID, callbackResponseString)
+			if _, err := bot.Send(callbackAnswer); err != nil {
+				logging.Errorf("error when answering callback: %v", err)
+			}
+			continue
 		}
 
 		if update.Message == nil {

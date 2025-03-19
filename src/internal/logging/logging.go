@@ -53,9 +53,9 @@ func Debugf(message string, debugObjects ...interface{}) {
 	log.Printf("[DEBUG] %s", debugLog)
 }
 
+// TODO: tweak to take pointer of Update object
 func LogUpdateObject(update tgbotapi.Update) {
 	Infof("Update: %+v", update)
-	// TODO: Maybe make these debug level logs
 	Debugf("Update - Message payload: %+v", update.Message)
 	Debugf("Update - EditedMessage payload: %+v", update.EditedMessage)
 	Debugf("Update - InlineQuery payload: %+v", update.InlineQuery)
