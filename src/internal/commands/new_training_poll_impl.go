@@ -13,7 +13,8 @@ import (
 
 // Handle initiates the handling flow for the "/newtrainingpoll" command.
 func (h *NewTrainingPollCommandHandlerImpl) Handle(ctx context.Context) error {
-	trainingPollMessageContent, err := buildTrainingPollMessageContent(ctx, h.update)
+	// trainingPollMessageContent, err := buildTrainingPollMessageContent(ctx, h.update)
+	trainingPollMessageContent, err := provideSimpleTestTrainingPollMessageContent(ctx)
 	if err != nil {
 		return err
 	}
@@ -32,6 +33,13 @@ func (h *NewTrainingPollCommandHandlerImpl) Handle(ctx context.Context) error {
 		return err
 	}
 	return nil
+}
+
+// TODO @jonlee: Delete once tests are complete
+// provideSimpleTestTrainingPollMessageContent builds a simple content string for testing purposes.
+func provideSimpleTestTrainingPollMessageContent(ctx context.Context) (string, error) {
+	messageContent := "hallo chat from Maki15Pro"
+	return messageContent, nil
 }
 
 // buildTrainingPollMessageContent builds the content string for a training poll message.
