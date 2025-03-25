@@ -13,7 +13,8 @@ import (
 
 // Handle initiates the handling flow for the "/newtrainingpoll" command.
 func (h *NewTrainingPollCommandHandlerImpl) Handle(ctx context.Context) error {
-	trainingPollMessageContent, err := buildTrainingPollMessageContent(ctx, h.update)
+	// trainingPollMessageContent, err := buildTrainingPollMessageContent(ctx, h.update)
+	trainingPollMessageContent, err := provideSimpleTestTrainingPollMessageContent(ctx)
 	if err != nil {
 		return err
 	}
