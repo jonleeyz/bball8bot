@@ -78,7 +78,7 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 		// if message is not command, echo message as reply to original message
 		newReply := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
 		newReply.BaseChat.ReplyToMessageID = update.Message.MessageID
-		if _, err := bot.Request(newReply); err != nil {
+		if _, err := bot.Send(newReply); err != nil {
 			logging.Errorf("error when calling Telegram Bot API to send message: %v", err)
 		}
 	}
