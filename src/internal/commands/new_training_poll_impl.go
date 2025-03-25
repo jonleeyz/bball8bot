@@ -34,6 +34,13 @@ func (h *NewTrainingPollCommandHandlerImpl) Handle(ctx context.Context) error {
 	return nil
 }
 
+// TODO @jonlee: Delete once tests are complete
+// provideSimpleTestTrainingPollMessageContent builds a simple content string for testing purposes.
+func provideSimpleTestTrainingPollMessageContent(ctx context.Context) (string, error) {
+	messageContent := "hallo chat from Maki15Pro"
+	return messageContent, nil
+}
+
 // buildTrainingPollMessageContent builds the content string for a training poll message.
 func buildTrainingPollMessageContent(ctx context.Context, update *tgbotapi.Update) (string, error) {
 	content := generateTrainingPollContent(time.Saturday)
