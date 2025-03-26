@@ -91,5 +91,5 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 
 func main() {
 	logging.Init()
-	lambda.Start(HandleRequest)
+	lambda.StartWithOptions(HandleRequest, lambda.WithContext(context.TODO()))
 }
