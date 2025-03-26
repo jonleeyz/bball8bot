@@ -49,7 +49,6 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 		}
 
 		// TODO @jonlee: Update, placeholder, just to ensure that callback queries are answered.
-		logging.Debugf("BEFORE CALLBACK QUERY HANDLING BLOCK")
 		if update.CallbackQuery != nil {
 			callback := update.CallbackQuery
 			callbackResponseString := fmt.Sprintf("button pressed: %s", callback.Data)
@@ -67,18 +66,16 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 			continue
 		}
 
-		logging.Debugf("BEFORE COMMAND HANDLING BLOCK")
 		// if message is command, call command handler
 		if update.Message.IsCommand() {
 			if err := commands.HandleBotCommand(ctx, bot, update); err != nil {
 				// TODO @jonlee: Tidy this log statement
 				logging.Errorf("TEMP TOP level log: %v", err)
-				continue
 			}
+			continue
 		}
 
 		// if message is not command, echo message as reply to original message
-		logging.Debugf("BEFORE MISC MESSAGE HANDLING BLOCK")
 		newReply := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
 		newReply.BaseChat.ReplyToMessageID = update.Message.MessageID
 		if _, err := bot.Send(newReply); err != nil {
