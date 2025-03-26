@@ -55,7 +55,13 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 			callbackTemplateReply := tgbotapi.NewMessage(callback.From.ID, callbackResponseString)
 			bot.Send(callbackTemplateReply)
 
-			callbackAnswer := tgbotapi.NewCallbackWithAlert(callback.ID, callbackResponseString)
+			var callbackAnswer tgbotapi.CallbackConfig
+			if callbackResponseString == "ATTENDING" {
+				callbackAnswer = tgbotapi.NewCallbackWithAlert(callback.ID, callbackResponseString)
+			} else {
+				callbackAnswer = tgbotapi.NewCallback(callback.ID, callbackResponseString)
+			}
+
 			if _, err := bot.Request(callbackAnswer); err != nil {
 				logging.Errorf("error when answering callback: %v", err)
 			}
