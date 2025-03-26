@@ -87,12 +87,12 @@ func addEscapeTokens(trainingPollMessageContent string) string {
 func buildInlineKeyboard() tgbotapi.InlineKeyboardMarkup {
 	return tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("test1", CALLBACK_QUERY_BUTTON_PRESSED),
-			tgbotapi.NewInlineKeyboardButtonData("test2", CALLBACK_QUERY_BUTTON_PRESSED),
+			tgbotapi.NewInlineKeyboardButtonData("Attending", "ATTENDING"),
+			tgbotapi.NewInlineKeyboardButtonData("Confirming, will update", "WILL_UPDATE"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("test3", CALLBACK_QUERY_BUTTON_PRESSED),
-			tgbotapi.NewInlineKeyboardButtonData("test4", CALLBACK_QUERY_BUTTON_PRESSED),
+			tgbotapi.NewInlineKeyboardButtonData("Not attending", "NOT_ATTENDING"),
+			tgbotapi.NewInlineKeyboardButtonData("TEST BUTTON", CALLBACK_QUERY_BUTTON_PRESSED),
 		),
 	)
 }
