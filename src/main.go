@@ -54,7 +54,7 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 			callbackResponseString := fmt.Sprintf("button pressed: %s", callback.Data)
 
 			var callbackAnswer tgbotapi.CallbackConfig
-			if callbackResponseString == "ATTENDING" {
+			if callbackResponseString == "button pressed: ATTENDING" {
 				callbackAnswer = tgbotapi.NewCallbackWithAlert(callback.ID, callbackResponseString)
 			} else {
 				callbackAnswer = tgbotapi.NewCallback(callback.ID, callbackResponseString)
