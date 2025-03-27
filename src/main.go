@@ -15,6 +15,11 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
+func main() {
+	logging.Init()
+	lambda.StartWithOptions(HandleRequest, lambda.WithContext(context.TODO()))
+}
+
 func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 	if event == nil {
 		errMessage := "error: event is nil"
@@ -87,9 +92,4 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 		}
 	}
 	return nil
-}
-
-func main() {
-	logging.Init()
-	lambda.StartWithOptions(HandleRequest, lambda.WithContext(context.TODO()))
 }
