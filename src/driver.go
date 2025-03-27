@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
-	"fmt"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/jonleeyz/bball8bot/commands"
+	"github.com/jonleeyz/bball8bot/internal/handlers/callbacks"
 	"github.com/jonleeyz/bball8bot/internal/logging"
 )
 
@@ -14,20 +14,8 @@ import (
 func handleUpdate(ctx context.Context, update *tgbotapi.Update, bot *tgbotapi.BotAPI) {
 	// TODO @jonlee: Update, placeholder, just to ensure that callback queries are answered.
 	if update.CallbackQuery != nil {
-		callback := update.CallbackQuery
-		callbackResponseString := fmt.Sprintf("button pressed: %s", callback.Data)
-
-		var callbackAnswer tgbotapi.CallbackConfig
-		if callbackResponseString == "button pressed: ATTENDING" {
-			callbackAnswer = tgbotapi.NewCallbackWithAlert(callback.ID, callbackResponseString)
-		} else {
-			callbackAnswer = tgbotapi.NewCallback(callback.ID, callbackResponseString)
-		}
-
-		if _, err := bot.Request(callbackAnswer); err != nil {
-			logging.Errorf("error when answering callback: %v", err)
-		}
-		return
+		handler := callbacks.Init(bot)
+		handler.Handle(ctx, update)
 	}
 
 	if update.Message == nil {
