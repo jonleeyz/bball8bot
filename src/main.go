@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 
-	"github.com/jonleeyz/bbball8bot/internal/commands"
+	"github.com/jonleeyz/bbball8bot/commands"
 	"github.com/jonleeyz/bbball8bot/internal/json"
 	"github.com/jonleeyz/bbball8bot/internal/logging"
 	"github.com/jonleeyz/bbball8bot/internal/secrets"
