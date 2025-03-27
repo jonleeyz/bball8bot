@@ -6,6 +6,7 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/jonleeyz/bball8bot/commands"
 	"github.com/jonleeyz/bball8bot/internal/handlers/callbacks"
+	"github.com/jonleeyz/bball8bot/internal/handlers/messages"
 	"github.com/jonleeyz/bball8bot/internal/logging"
 )
 
@@ -31,10 +32,6 @@ func handleUpdate(ctx context.Context, update *tgbotapi.Update, bot *tgbotapi.Bo
 		return
 	}
 
-	// if message is not command, echo message as reply to original message
-	newReply := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
-	newReply.BaseChat.ReplyToMessageID = update.Message.MessageID
-	if _, err := bot.Send(newReply); err != nil {
-		logging.Errorf("error when calling Telegram Bot API to send message: %v", err)
-	}
+	messageHandler := messages.Init(bot)
+	messageHandler.Handle(ctx, update)
 }
