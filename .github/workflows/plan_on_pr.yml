@@ -27,7 +27,7 @@ jobs:
       - name: Build Lambda function handler Go executable
         id: go-build
         working-directory: ./src
-        run: GOOS=linux GOARCH=amd64 go build -tags lambda.norpc -o ../infra/prd/terraform/bin/bootstrap main.go
+        run: GOOS=linux GOARCH=amd64 go build -tags lambda.norpc -o ../infra/prd/terraform/bin/bootstrap main.go driver.go
 
       - name: Assume CI AWS IAM role
         uses: aws-actions/configure-aws-credentials@v4
