@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/jonleeyz/bbball8bot/internal/logging"
+	"github.com/jonleeyz/bball8bot/internal/logging"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )

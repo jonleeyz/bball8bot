@@ -7,9 +7,9 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 
-	"github.com/jonleeyz/bbball8bot/internal/json"
-	"github.com/jonleeyz/bbball8bot/internal/logging"
-	"github.com/jonleeyz/bbball8bot/internal/secrets"
+	"github.com/jonleeyz/bball8bot/internal/json"
+	"github.com/jonleeyz/bball8bot/internal/logging"
+	"github.com/jonleeyz/bball8bot/internal/secrets"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )

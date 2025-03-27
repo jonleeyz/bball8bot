@@ -1,4 +1,4 @@
-module github.com/jonleeyz/bbball8bot
+module github.com/jonleeyz/bball8bot
 
 go 1.24.1
 

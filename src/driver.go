@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"github.com/jonleeyz/bbball8bot/commands"
-	"github.com/jonleeyz/bbball8bot/internal/logging"
+	"github.com/jonleeyz/bball8bot/commands"
+	"github.com/jonleeyz/bball8bot/internal/logging"
 )
 
 // handleUpdate parses the input Update object, and responds accordingly.
