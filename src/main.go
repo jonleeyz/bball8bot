@@ -27,17 +27,8 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 		return fmt.Errorf("%s", errMessage)
 	}
 
-	token, err := secrets.GetBotToken()
+	bot, err := getBot()
 	if err != nil {
-		logging.Fatalf("error when retrieving Telegram bot token: %v", err)
-		return err
-	}
-
-	bot, err := tgbotapi.NewBotAPI(token)
-	// TODO @jonlee: Refactor this into a proper config module
-	bot.Debug = logging.IS_DEBUG_LOGGING_ENABLED
-	if err != nil {
-		logging.Fatalf("error when creating Telegram bot object: %v", err)
 		return err
 	}
 
@@ -92,4 +83,22 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 		}
 	}
 	return nil
+}
+
+// getBot retrieves the Telegram bot token and creates a valid bot API instance.
+func getBot() (*tgbotapi.BotAPI, error) {
+	token, err := secrets.GetBotToken()
+	if err != nil {
+		logging.Fatalf("error when retrieving Telegram bot token: %v", err)
+		return nil, err
+	}
+
+	bot, err := tgbotapi.NewBotAPI(token)
+	// TODO @jonlee: Refactor this into a proper config module
+	bot.Debug = logging.IS_DEBUG_LOGGING_ENABLED
+	if err != nil {
+		logging.Fatalf("error when creating Telegram bot object: %v", err)
+		return nil, err
+	}
+	return bot, nil
 }
