@@ -53,7 +53,8 @@ func Debugf(message string, debugObjects ...any) {
 	log.Printf("[DEBUG] %s", debugLog)
 }
 
-// TODO: tweak to take pointer of Update object
+// TODO @jonlee: tweak to take pointer of Update object.
+// TODO @jonlee: Update implementation to make log info more useful; only log fields that are helpful to reduce verbosity.
 func LogUpdateObject(update tgbotapi.Update) {
 	Infof("Update: %+v", update)
 	Debugf("Update - Message payload: %+v", update.Message)
