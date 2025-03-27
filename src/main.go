@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 
+	"github.com/jonleeyz/bball8bot/internal/handlers"
 	"github.com/jonleeyz/bball8bot/internal/json"
 	"github.com/jonleeyz/bball8bot/internal/logging"
 	"github.com/jonleeyz/bball8bot/internal/secrets"
@@ -40,7 +41,7 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 			continue
 		}
 
-		handleUpdate(ctx, update, bot)
+		handlers.HandleUpdate(ctx, update, bot)
 	}
 
 	// must return nil as Telegram will retry posting the Update to the webhook if something other than 2xx is returned.
