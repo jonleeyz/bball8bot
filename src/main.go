@@ -7,7 +7,6 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 
-	"github.com/jonleeyz/bbball8bot/commands"
 	"github.com/jonleeyz/bbball8bot/internal/json"
 	"github.com/jonleeyz/bbball8bot/internal/logging"
 	"github.com/jonleeyz/bbball8bot/internal/secrets"
@@ -41,44 +40,11 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 			continue
 		}
 
-		// TODO @jonlee: Update, placeholder, just to ensure that callback queries are answered.
-		if update.CallbackQuery != nil {
-			callback := update.CallbackQuery
-			callbackResponseString := fmt.Sprintf("button pressed: %s", callback.Data)
-
-			var callbackAnswer tgbotapi.CallbackConfig
-			if callbackResponseString == "button pressed: ATTENDING" {
-				callbackAnswer = tgbotapi.NewCallbackWithAlert(callback.ID, callbackResponseString)
-			} else {
-				callbackAnswer = tgbotapi.NewCallback(callback.ID, callbackResponseString)
-			}
-
-			if _, err := bot.Request(callbackAnswer); err != nil {
-				logging.Errorf("error when answering callback: %v", err)
-			}
-			continue
-		}
-
-		if update.Message == nil {
-			continue
-		}
-
-		// if message is command, call command handler
-		if update.Message.IsCommand() {
-			if err := commands.HandleBotCommand(ctx, bot, update); err != nil {
-				// TODO @jonlee: Tidy this log statement
-				logging.Errorf("TEMP TOP level log: %v", err)
-			}
-			continue
-		}
-
-		// if message is not command, echo message as reply to original message
-		newReply := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
-		newReply.BaseChat.ReplyToMessageID = update.Message.MessageID
-		if _, err := bot.Send(newReply); err != nil {
-			logging.Errorf("error when calling Telegram Bot API to send message: %v", err)
-		}
+		handleUpdate(ctx, update, bot)
 	}
+
+	// must return nil as Telegram will retry posting the Update to the webhook if something other than 2xx is returned.
+	// Ref: https://core.telegram.org/bots/api#setwebhook
 	return nil
 }
 
