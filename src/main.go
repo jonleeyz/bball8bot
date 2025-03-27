@@ -38,10 +38,7 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 	for _, sqsMessage := range event.Records {
 		update, err := json.GetTelegramUpdateFromSQSMessage(sqsMessage)
 		if err != nil {
-			logging.Errorf("error when unmarshaling SQS message: %v", err)
 			continue
-		} else {
-			logging.LogUpdateObject(*update)
 		}
 
 		// TODO @jonlee: Update, placeholder, just to ensure that callback queries are answered.
