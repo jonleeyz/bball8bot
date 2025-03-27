@@ -23,7 +23,7 @@ func Init() {
 }
 
 // Infof is a syntatic wrapper around the log.Printf function.
-func Infof(message string, debugObjects ...interface{}) {
+func Infof(message string, debugObjects ...any) {
 	log.Printf(message, debugObjects...)
 }
 
@@ -33,18 +33,18 @@ func Fatal(errMessage string) {
 }
 
 // Fatalf is a syntatic wrapper around the log.Fatalf function.
-func Fatalf(errMessage string, debugObjects ...interface{}) {
+func Fatalf(errMessage string, debugObjects ...any) {
 	log.Fatalf(errMessage, debugObjects...)
 }
 
 // Errorf is a syntatic wrapper around the log.Printf function that creates a log entry with error tags.
-func Errorf(errMessage string, debugObjects ...interface{}) {
+func Errorf(errMessage string, debugObjects ...any) {
 	errorLog := fmt.Errorf(errMessage, debugObjects...)
 	log.Printf("[ERROR] %s", errorLog)
 }
 
 // Debugf is a syntatic wrapper around the log.Printf function that creates a log entry with debug tags.
-func Debugf(message string, debugObjects ...interface{}) {
+func Debugf(message string, debugObjects ...any) {
 	if !IS_DEBUG_LOGGING_ENABLED {
 		return
 	}
