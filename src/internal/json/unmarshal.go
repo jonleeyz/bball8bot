@@ -25,10 +25,12 @@ func GetTelegramUpdateFromSQSMessage(sqsMessage events.SQSMessage) (*tgbotapi.Up
 		logging.Errorf("error when unmarshaling Telegram Update object: %v", err)
 		return nil, err
 	}
-	logging.Infof("Unmarshal sqsMessageBody post-unmarshal: %+v", unmarshaledSQSMessageBody)
+	logging.Debugf("Unmarshal sqsMessageBody post-unmarshal: %+v", unmarshaledSQSMessageBody)
 
 	// 3. Return Update object
-	return &unmarshaledSQSMessageBody.Body, nil
+	update := unmarshaledSQSMessageBody.Body
+	logging.LogUpdateObject(update)
+	return &update, nil
 }
 
 // SQSMessageBody is the unmarshal destination for an SQSMessage.Body JSON payload.
