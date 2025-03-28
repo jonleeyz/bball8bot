@@ -22,8 +22,8 @@ func Init(bot *tgbotapi.BotAPI, update *tgbotapi.Update) (*CallbackQueryHandler,
 	return &CallbackQueryHandler{bot: bot, update: update}, nil
 }
 
-func (h *CallbackQueryHandler) Handle(ctx context.Context, update *tgbotapi.Update) error {
-	callback := update.CallbackQuery
+func (h *CallbackQueryHandler) Handle(ctx context.Context) error {
+	callback := h.update.CallbackQuery
 	callbackResponseString := fmt.Sprintf("button pressed: %s", callback.Data)
 
 	var callbackAnswer tgbotapi.CallbackConfig
