@@ -11,9 +11,9 @@ func HandleUpdate(ctx context.Context, update *tgbotapi.Update, bot *tgbotapi.Bo
 	if err != nil {
 		return err
 	}
-	return h.Handle(ctx, update)
+	return h.Handle(ctx)
 }
 
 type UpdateHandler interface {
-	Handle(ctx context.Context, update *tgbotapi.Update) error
+	Handle(ctx context.Context) error
 }
