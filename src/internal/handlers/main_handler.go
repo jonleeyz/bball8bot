@@ -25,6 +25,10 @@ func HandleUpdate(ctx context.Context, update *tgbotapi.Update, bot *tgbotapi.Bo
 // Reference: https://core.telegram.org/bots/api#update
 // getHandler returns a new handler appropriate to handle the input Update's content.
 func getHandler(ctx context.Context, bot *tgbotapi.BotAPI, update *tgbotapi.Update) (UpdateHandler, error) {
+	if bot == nil {
+		return nil, errors.New("bot provided is nil")
+	}
+
 	if isUpdateACallbackQuery(ctx, update) {
 		return callbacks.Init(bot), nil
 	}
