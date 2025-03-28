@@ -37,7 +37,7 @@ func Init(bot *tgbotapi.BotAPI, update *tgbotapi.Update) (*CallbackQueryHandler,
 
 func (h *CallbackQueryHandler) Handle(ctx context.Context) error {
 	callbackData := h.callbackQuery.Data
-	if callbackData == "ATTENDING" {
+	if callbackData == CALLBACK_DATA_ATTENDING {
 		return h.handleAttendingCallback(ctx)
 	}
 
