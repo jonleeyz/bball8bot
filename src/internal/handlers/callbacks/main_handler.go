@@ -10,15 +10,16 @@ import (
 )
 
 type CallbackQueryHandler struct {
-	bot *tgbotapi.BotAPI
+	bot    *tgbotapi.BotAPI
+	update *tgbotapi.Update
 }
 
-func Init(bot *tgbotapi.BotAPI) (*CallbackQueryHandler, error) {
+func Init(bot *tgbotapi.BotAPI, update *tgbotapi.Update) (*CallbackQueryHandler, error) {
 	if bot == nil {
 		return nil, fmt.Errorf("error when creating callback query handler: %s", customerrors.ERROR_MESSAGE_NIL_INPUT_BOT)
 	}
 
-	return &CallbackQueryHandler{bot: bot}, nil
+	return &CallbackQueryHandler{bot: bot, update: update}, nil
 }
 
 func (h *CallbackQueryHandler) Handle(ctx context.Context, update *tgbotapi.Update) error {

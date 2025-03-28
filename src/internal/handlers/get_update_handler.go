@@ -22,10 +22,10 @@ import (
 // Updates provided by Telegram backend are guaranteed to fulfill this pre-condition.
 func getUpdateHandler(ctx context.Context, bot *tgbotapi.BotAPI, update *tgbotapi.Update) (UpdateHandler, error) {
 	if isUpdateACallbackQuery(update) {
-		return callbacks.Init(bot)
+		return callbacks.Init(bot, update)
 	}
 	if isUpdateAMessage(update) {
-		return messages.Init(bot)
+		return messages.Init(bot, update)
 	}
 	return nil, fmt.Errorf("no suitable handler found for input update: %+v", update)
 }

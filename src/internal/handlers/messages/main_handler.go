@@ -11,15 +11,16 @@ import (
 )
 
 type MessageHandler struct {
-	bot *tgbotapi.BotAPI
+	bot    *tgbotapi.BotAPI
+	update *tgbotapi.Update
 }
 
-func Init(bot *tgbotapi.BotAPI) (*MessageHandler, error) {
+func Init(bot *tgbotapi.BotAPI, update *tgbotapi.Update) (*MessageHandler, error) {
 	if bot == nil {
 		return nil, fmt.Errorf("error when creating messages handler: %s", customerrors.ERROR_MESSAGE_NIL_INPUT_BOT)
 	}
 
-	return &MessageHandler{bot: bot}, nil
+	return &MessageHandler{bot: bot, update: update}, nil
 }
 
 func (h *MessageHandler) Handle(ctx context.Context, update *tgbotapi.Update) error {
