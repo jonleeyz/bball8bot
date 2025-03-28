@@ -2,9 +2,11 @@ package messages
 
 import (
 	"context"
+	"fmt"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/jonleeyz/bball8bot/commands"
+	customerrors "github.com/jonleeyz/bball8bot/internal/custom-errors"
 	"github.com/jonleeyz/bball8bot/internal/logging"
 )
 
@@ -12,10 +14,12 @@ type MessageHandler struct {
 	bot *tgbotapi.BotAPI
 }
 
-func Init(bot *tgbotapi.BotAPI) *MessageHandler {
-	return &MessageHandler{
-		bot: bot,
+func Init(bot *tgbotapi.BotAPI) (*MessageHandler, error) {
+	if bot == nil {
+		return nil, fmt.Errorf("error when creating messages handler: %s", customerrors.ERROR_MESSAGE_NIL_INPUT_BOT)
 	}
+
+	return &MessageHandler{bot: bot}, nil
 }
 
 func (h *MessageHandler) Handle(ctx context.Context, update *tgbotapi.Update) error {
