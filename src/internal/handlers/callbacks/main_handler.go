@@ -33,15 +33,15 @@ func Init(bot *tgbotapi.BotAPI, update *tgbotapi.Update) (*CallbackQueryHandler,
 }
 
 func (h *CallbackQueryHandler) Handle(ctx context.Context) error {
+	callbackData := h.callbackQuery.Data
+	if callbackData == "ATTENDING" {
+		return h.handleAttendingCallback(ctx)
+	}
+
 	callback := h.update.CallbackQuery
 	callbackResponseString := fmt.Sprintf("button pressed: %s", callback.Data)
 
-	var callbackAnswer tgbotapi.CallbackConfig
-	if callbackResponseString == "button pressed: ATTENDING" {
-		callbackAnswer = tgbotapi.NewCallbackWithAlert(callback.ID, callbackResponseString)
-	} else {
-		callbackAnswer = tgbotapi.NewCallback(callback.ID, callbackResponseString)
-	}
+	callbackAnswer := tgbotapi.NewCallback(callback.ID, callbackResponseString)
 
 	if _, err := h.bot.Request(callbackAnswer); err != nil {
 		logging.Errorf("error when answering callback: %v", err)
