@@ -7,7 +7,7 @@ import (
 )
 
 func HandleUpdate(ctx context.Context, update *tgbotapi.Update, bot *tgbotapi.BotAPI) error {
-	h, err := getUpdateHandler(ctx, bot, update)
+	h, err := createUpdateHandler(ctx, bot, update)
 	if err != nil {
 		return err
 	}
