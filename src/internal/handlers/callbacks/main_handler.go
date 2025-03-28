@@ -18,6 +18,14 @@ func Init(bot *tgbotapi.BotAPI, update *tgbotapi.Update) (*CallbackQueryHandler,
 	if bot == nil {
 		return nil, fmt.Errorf("error when creating callback query handler: %s", customerrors.ERROR_MESSAGE_NIL_INPUT_BOT)
 	}
+	if update == nil {
+		return nil, fmt.Errorf("error when creating callback query handler: %s", customerrors.ERROR_MESSAGE_NIL_INPUT_UPDATE)
+	}
+	if update.CallbackQuery == nil {
+		return nil, fmt.Errorf("error when creating callback query handler: %s || update: %+v",
+			"input update has nil callback",
+			*update)
+	}
 
 	return &CallbackQueryHandler{bot: bot, update: update}, nil
 }
