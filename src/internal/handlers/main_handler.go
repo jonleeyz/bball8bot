@@ -41,3 +41,34 @@ func getHandler(ctx context.Context, bot *tgbotapi.BotAPI, update *tgbotapi.Upda
 	logging.Errorf("no appropriate update handler found; update: %+v", *update)
 	return nil, errors.New("no matching handler found")
 }
+
+type UpdateHandler interface {
+	Handle(ctx context.Context, update *tgbotapi.Update) error
+}
+
+/**
+ * Optional fields:
+ * - message
+ * - edited_message
+ * - channel_post
+ * - edited_channel_post
+ * - busines_connection
+ * - business_message
+ * - edited_business_message
+ * - deleted_business_messages
+ * - message_reaction
+ * - message_reaction_count
+ * - inline_query
+ * - chosen_inline_result
+ * - callback_query
+ * - shipping_query
+ * - pre_checkout_query
+ * - purchased_paid_media
+ * - poll
+ * - poll_answer
+ * - my_chat_member
+ * - chat_member
+ * - chat_join_request
+ * - chat_boost
+ * - removed_chat_boost
+ */
