@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	inlinekeyboards "github.com/jonleeyz/bball8bot/internal/inline-keyboards"
 	"github.com/jonleeyz/bball8bot/internal/logging"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -23,7 +24,7 @@ func (h *NewTrainingPollCommandHandlerImpl) Handle(ctx context.Context) error {
 
 	trainingPollMessageResponse := tgbotapi.NewMessage(h.update.Message.Chat.ID, trainingPollMessageContent)
 	trainingPollMessageResponse.ParseMode = "MarkdownV2"
-	trainingPollMessageResponse.ReplyMarkup = buildInlineKeyboard()
+	trainingPollMessageResponse.ReplyMarkup = inlinekeyboards.BuildTrainingPollInlineKeyboard()
 
 	if _, err := h.bot.Send(trainingPollMessageResponse); err != nil {
 		logging.Errorf(
@@ -81,20 +82,6 @@ func addEscapeTokens(trainingPollMessageContent string) string {
 	trainingPollMessageContent = strings.Replace(trainingPollMessageContent, "-", "\\-", -1)
 	trainingPollMessageContent = strings.Replace(trainingPollMessageContent, "=", "\\=", -1)
 	return trainingPollMessageContent
-}
-
-// buildInlineKeyboard builds a basic inline keyboard for the training poll template messsage.
-func buildInlineKeyboard() tgbotapi.InlineKeyboardMarkup {
-	return tgbotapi.NewInlineKeyboardMarkup(
-		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("Attending", "ATTENDING"),
-			tgbotapi.NewInlineKeyboardButtonData("Confirming, will update", "WILL_UPDATE"),
-		),
-		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("Not attending", "NOT_ATTENDING"),
-			tgbotapi.NewInlineKeyboardButtonData("TEST BUTTON", CALLBACK_QUERY_BUTTON_PRESSED),
-		),
-	)
 }
 
 type trainingPollContent struct {
