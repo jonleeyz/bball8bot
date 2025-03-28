@@ -17,10 +17,10 @@ import (
  * Reference: (https://core.telegram.org/bots/api#update)
  */
 
-// getUpdateHandler returns a new handler instance suitable to handle the input Update's content.
+// createUpdateHandler returns a new handler instance suitable to handle the input Update's content.
 // Pre-condition: Exactly 1 optional field in an Update object will be non-nil.
 // Updates provided by Telegram backend are guaranteed to fulfill this pre-condition.
-func getUpdateHandler(ctx context.Context, bot *tgbotapi.BotAPI, update *tgbotapi.Update) (UpdateHandler, error) {
+func createUpdateHandler(ctx context.Context, bot *tgbotapi.BotAPI, update *tgbotapi.Update) (UpdateHandler, error) {
 	if isUpdateACallbackQuery(update) {
 		return callbacks.Init(bot, update)
 	}
