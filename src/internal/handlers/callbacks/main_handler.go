@@ -11,7 +11,6 @@ import (
 
 type CallbackQueryHandler struct {
 	bot           *tgbotapi.BotAPI
-	updateID      int
 	callbackQuery *tgbotapi.CallbackQuery
 	update        *tgbotapi.Update
 }
@@ -29,7 +28,11 @@ func Init(bot *tgbotapi.BotAPI, update *tgbotapi.Update) (*CallbackQueryHandler,
 			*update)
 	}
 
-	return &CallbackQueryHandler{bot: bot, update: update}, nil
+	return &CallbackQueryHandler{
+		bot:           bot,
+		callbackQuery: update.CallbackQuery,
+		update:        update,
+	}, nil
 }
 
 func (h *CallbackQueryHandler) Handle(ctx context.Context) error {
