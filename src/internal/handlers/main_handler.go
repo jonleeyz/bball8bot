@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"context"
-	"errors"
+	"fmt"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/jonleeyz/bball8bot/internal/handlers/callbacks"
@@ -16,6 +16,7 @@ import (
 func HandleUpdate(ctx context.Context, update *tgbotapi.Update, bot *tgbotapi.BotAPI) {
 	h, err := getUpdateHandler(ctx, bot, update)
 	if err != nil {
+		logging.Errorf("%s", err.Error())
 		return
 	}
 	h.Handle(ctx, update)
@@ -31,9 +32,7 @@ func getUpdateHandler(ctx context.Context, bot *tgbotapi.BotAPI, update *tgbotap
 	if isUpdateAMessage(ctx, update) {
 		return messages.Init(bot)
 	}
-
-	logging.Errorf("no appropriate update handler found; update: %+v", *update)
-	return nil, errors.New("no matching handler found")
+	return nil, fmt.Errorf("no appropriate handler found for input update: %+v", update)
 }
 
 type UpdateHandler interface {
