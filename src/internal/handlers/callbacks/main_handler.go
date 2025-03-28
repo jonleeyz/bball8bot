@@ -10,8 +10,10 @@ import (
 )
 
 type CallbackQueryHandler struct {
-	bot    *tgbotapi.BotAPI
-	update *tgbotapi.Update
+	bot           *tgbotapi.BotAPI
+	updateID      int
+	callbackQuery *tgbotapi.CallbackQuery
+	update        *tgbotapi.Update
 }
 
 func Init(bot *tgbotapi.BotAPI, update *tgbotapi.Update) (*CallbackQueryHandler, error) {
