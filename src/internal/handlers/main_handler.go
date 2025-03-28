@@ -25,15 +25,11 @@ func HandleUpdate(ctx context.Context, update *tgbotapi.Update, bot *tgbotapi.Bo
 // Reference: https://core.telegram.org/bots/api#update
 // getUpdateHandler returns a new handler appropriate to handle the input Update's content.
 func getUpdateHandler(ctx context.Context, bot *tgbotapi.BotAPI, update *tgbotapi.Update) (UpdateHandler, error) {
-	if bot == nil {
-		return nil, errors.New("bot provided is nil")
-	}
-
 	if isUpdateACallbackQuery(ctx, update) {
-		return callbacks.Init(bot), nil
+		return callbacks.Init(bot)
 	}
 	if isUpdateAMessage(ctx, update) {
-		return messages.Init(bot), nil
+		return messages.Init(bot)
 	}
 
 	logging.Errorf("no appropriate update handler found; update: %+v", *update)
