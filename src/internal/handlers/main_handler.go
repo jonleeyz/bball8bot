@@ -2,11 +2,8 @@ package handlers
 
 import (
 	"context"
-	"fmt"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"github.com/jonleeyz/bball8bot/internal/handlers/callbacks"
-	"github.com/jonleeyz/bball8bot/internal/handlers/messages"
 	"github.com/jonleeyz/bball8bot/internal/logging"
 )
 
@@ -22,46 +19,6 @@ func HandleUpdate(ctx context.Context, update *tgbotapi.Update, bot *tgbotapi.Bo
 	h.Handle(ctx, update)
 }
 
-// getUpdateHandler returns a new handler appropriate to handle the input Update's content.
-// Pre-condition: Exactly 1 optional field in an Update object will be non-nil.
-// Updates provided by Telegram backend are guaranteed to fulfill this pre-condition: (https://core.telegram.org/bots/api#update)
-func getUpdateHandler(ctx context.Context, bot *tgbotapi.BotAPI, update *tgbotapi.Update) (UpdateHandler, error) {
-	if isUpdateACallbackQuery(ctx, update) {
-		return callbacks.Init(bot)
-	}
-	if isUpdateAMessage(ctx, update) {
-		return messages.Init(bot)
-	}
-	return nil, fmt.Errorf("no appropriate handler found for input update: %+v", update)
-}
-
 type UpdateHandler interface {
 	Handle(ctx context.Context, update *tgbotapi.Update) error
 }
-
-/**
- * Optional fields:
- * - message
- * - edited_message
- * - channel_post
- * - edited_channel_post
- * - busines_connection
- * - business_message
- * - edited_business_message
- * - deleted_business_messages
- * - message_reaction
- * - message_reaction_count
- * - inline_query
- * - chosen_inline_result
- * - callback_query
- * - shipping_query
- * - pre_checkout_query
- * - purchased_paid_media
- * - poll
- * - poll_answer
- * - my_chat_member
- * - chat_member
- * - chat_join_request
- * - chat_boost
- * - removed_chat_boost
- */
