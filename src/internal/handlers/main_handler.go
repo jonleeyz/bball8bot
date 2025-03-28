@@ -14,17 +14,11 @@ import (
 // No error is returned from this function, any error is logged but is not fatal; other updates can still be processed.
 // TODO @jonlee: Change signature to return error; not returning because of Telegram's requirement does not allow the function to be general purpose
 func HandleUpdate(ctx context.Context, update *tgbotapi.Update, bot *tgbotapi.BotAPI) {
-	if update.CallbackQuery != nil {
-		handler := callbacks.Init(bot)
-		handler.Handle(ctx, update)
-	}
-
-	if update.Message == nil {
+	h, err := getHandler(ctx, bot, update)
+	if err != nil {
 		return
 	}
-
-	messageHandler := messages.Init(bot)
-	messageHandler.Handle(ctx, update)
+	h.Handle(ctx, update)
 }
 
 // Pre-condition: Exactly 1 optional field in an Update object will be non-nil.
