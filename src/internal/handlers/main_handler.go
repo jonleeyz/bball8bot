@@ -22,9 +22,9 @@ func HandleUpdate(ctx context.Context, update *tgbotapi.Update, bot *tgbotapi.Bo
 	h.Handle(ctx, update)
 }
 
-// Pre-condition: Exactly 1 optional field in an Update object will be non-nil.
-// Reference: https://core.telegram.org/bots/api#update
 // getUpdateHandler returns a new handler appropriate to handle the input Update's content.
+// Pre-condition: Exactly 1 optional field in an Update object will be non-nil.
+// Updates provided by Telegram backend are guaranteed to fulfill this pre-condition: (https://core.telegram.org/bots/api#update)
 func getUpdateHandler(ctx context.Context, bot *tgbotapi.BotAPI, update *tgbotapi.Update) (UpdateHandler, error) {
 	if isUpdateACallbackQuery(ctx, update) {
 		return callbacks.Init(bot)
