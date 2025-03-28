@@ -41,7 +41,9 @@ func HandleRequest(ctx context.Context, event *events.SQSEvent) error {
 			continue
 		}
 
-		handlers.HandleUpdate(ctx, update, bot)
+		if err := handlers.HandleUpdate(ctx, update, bot); err != nil {
+			logging.Errorf("%s", err.Error())
+		}
 	}
 
 	// must return nil as Telegram will retry posting the Update to the webhook if something other than 2xx is returned.
