@@ -11,7 +11,6 @@ import (
 
 type CallbackQueryHandler struct {
 	bot           *tgbotapi.BotAPI
-	updateID      int
 	callbackQuery *tgbotapi.CallbackQuery
 	update        *tgbotapi.Update
 }
