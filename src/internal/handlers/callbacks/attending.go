@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"github.com/jonleeyz/bball8bot/internal/logging"
+	"github.com/jonleeyz/bball8bot/internal/util/logging"
 )
 
 func (h *CallbackQueryHandler) handleAttendingCallback(ctx context.Context) error {

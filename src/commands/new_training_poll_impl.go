@@ -7,7 +7,7 @@ import (
 	"time"
 
 	inlinekeyboards "github.com/jonleeyz/bball8bot/internal/inline-keyboards"
-	"github.com/jonleeyz/bball8bot/internal/logging"
+	"github.com/jonleeyz/bball8bot/internal/util/logging"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )

@@ -6,7 +6,7 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	customerrors "github.com/jonleeyz/bball8bot/internal/custom-errors"
-	"github.com/jonleeyz/bball8bot/internal/logging"
+	"github.com/jonleeyz/bball8bot/internal/util/logging"
 )
 
 type CallbackQueryHandler struct {
