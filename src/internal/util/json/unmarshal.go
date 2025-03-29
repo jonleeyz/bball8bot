@@ -5,7 +5,7 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 
-	"github.com/jonleeyz/bball8bot/internal/logging"
+	"github.com/jonleeyz/bball8bot/internal/util/logging"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )

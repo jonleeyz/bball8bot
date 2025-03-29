@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	inlinekeyboards "github.com/jonleeyz/bball8bot/internal/inline-keyboards"
-	"github.com/jonleeyz/bball8bot/internal/logging"
+	"github.com/jonleeyz/bball8bot/internal/assemblers"
+	"github.com/jonleeyz/bball8bot/internal/util/logging"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
@@ -24,7 +24,7 @@ func (h *NewTrainingPollCommandHandlerImpl) Handle(ctx context.Context) error {
 
 	trainingPollMessageResponse := tgbotapi.NewMessage(h.update.Message.Chat.ID, trainingPollMessageContent)
 	trainingPollMessageResponse.ParseMode = "MarkdownV2"
-	trainingPollMessageResponse.ReplyMarkup = inlinekeyboards.BuildTrainingPollInlineKeyboard()
+	trainingPollMessageResponse.ReplyMarkup = assemblers.AssembleTrainingPollInlineKeyboard()
 
 	if _, err := h.bot.Send(trainingPollMessageResponse); err != nil {
 		logging.Errorf(
