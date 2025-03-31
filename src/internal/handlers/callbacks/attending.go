@@ -55,13 +55,3 @@ func (h *CallbackQueryHandler) answerAttendingCallback(ctx context.Context) erro
 	}
 	return nil
 }
-
-// TODO @jonlee: To properly implement
-func appendAttendeeNameToAttendingSection(pollMessageBody, attendeeName string) string {
-	return fmt.Sprintf("%s\n%s", pollMessageBody, attendeeName)
-}
-
-// TODO @jonlee: To implement dynamically
-func (h *CallbackQueryHandler) getAttendeeName() string {
-	return h.callbackQuery.From.UserName
-}
