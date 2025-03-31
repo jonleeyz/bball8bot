@@ -5,7 +5,7 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/jonleeyz/bball8bot/commands"
-	customerrors "github.com/jonleeyz/bball8bot/internal/custom-errors"
+	customerrors "github.com/jonleeyz/bball8bot/internal/util/custom-errors"
 	"github.com/jonleeyz/bball8bot/internal/util/logging"
 )
 
