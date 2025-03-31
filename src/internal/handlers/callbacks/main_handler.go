@@ -17,10 +17,10 @@ type CallbackQueryHandler struct {
 
 func Init(bot *tgbotapi.BotAPI, update *tgbotapi.Update) (*CallbackQueryHandler, error) {
 	if bot == nil {
-		return nil, fmt.Errorf("error when creating callback query handler: %s", customerrors.ERROR_NIL_BOT)
+		return nil, errorCreatingCallbackQueryHandler(customerrors.ERROR_NIL_BOT)
 	}
 	if update == nil {
-		return nil, fmt.Errorf("error when creating callback query handler: %s", customerrors.ERROR_NIL_UPDATE)
+		return nil, errorCreatingCallbackQueryHandler(customerrors.ERROR_NIL_UPDATE)
 	}
 	if update.CallbackQuery == nil {
 		return nil, fmt.Errorf("error when creating callback query handler: %s || update: %+v",
@@ -52,3 +52,5 @@ func (h *CallbackQueryHandler) Handle(ctx context.Context) error {
 	}
 	return nil
 }
+
+var errorCreatingCallbackQueryHandler = customerrors.CreateErrorTemplate("error when creating callback query handler: %s")
