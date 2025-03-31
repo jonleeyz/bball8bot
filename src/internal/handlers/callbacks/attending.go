@@ -9,11 +9,16 @@ import (
 )
 
 func (h *CallbackQueryHandler) handleAttendingCallback(ctx context.Context) error {
+	err := h.addAttendeeNameToPollMessageBody(ctx)
+	logging.ErrorIfNonNil(err)
+
+	err = h.answerAttendingCallback(ctx)
+	logging.ErrorIfNonNil(err)
+
 	// TODO @jonlee: Make async
-	// TODO @jonlee: Error handling required?
-	h.addAttendeeNameToPollMessageBody(ctx)
-	h.answerAttendingCallback(ctx)
-	return nil
+	// go logging.ErrorIfNonNil(h.addAttendeeNameToPollMessageBody(ctx))
+	// go logging.ErrorIfNonNil(h.answerAttendingCallback(ctx))
+	return err
 }
 
 func (h *CallbackQueryHandler) addAttendeeNameToPollMessageBody(ctx context.Context) error {
