@@ -17,7 +17,7 @@ type MessageHandler struct {
 
 func Init(bot *tgbotapi.BotAPI, update *tgbotapi.Update) (*MessageHandler, error) {
 	if bot == nil {
-		return nil, fmt.Errorf("error when creating messages handler: %s", customerrors.ERROR_MESSAGE_NIL_INPUT_BOT)
+		return nil, fmt.Errorf("error when creating messages handler: %s", customerrors.ERROR_NIL_BOT)
 	}
 
 	return &MessageHandler{bot: bot, update: update}, nil
