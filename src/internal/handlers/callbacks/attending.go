@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/jonleeyz/bball8bot/internal/assemblers"
 	"github.com/jonleeyz/bball8bot/internal/util/logging"
 )
 
@@ -22,23 +23,12 @@ func (h *CallbackQueryHandler) handleAttendingCallback(ctx context.Context) erro
 }
 
 func (h *CallbackQueryHandler) addAttendeeNameToPollMessageBody(ctx context.Context) error {
-	// create edit message
-	attendeeName := h.getAttendeeName()
-	editMessage := tgbotapi.EditMessageTextConfig{
-		BaseEdit: tgbotapi.BaseEdit{
-			ChatID:      h.callbackQuery.From.ID,
-			MessageID:   h.callbackQuery.Message.MessageID,
-			ReplyMarkup: h.callbackQuery.Message.ReplyMarkup,
-		},
-
-		// TODO @jonlee: Ideally should not append by referring to previous text; should reconstruct and update poll from stored state.
-		Text:      appendAttendeeNameToAttendingSection(h.callbackQuery.Message.Text, attendeeName),
-		ParseMode: tgbotapi.ModeMarkdownV2,
-		// TODO @jonlee: Try entities
+	editMessage, err := assemblers.GetEditMessageConfigForAttendingCallback(ctx, h.callbackQuery)
+	if err != nil {
+		return err
 	}
 
-	// send edit message
-	_, err := h.bot.Send(editMessage)
+	_, err = h.bot.Send(editMessage)
 	logging.Debugf("edit message attempted; edit message body: %+v", editMessage)
 
 	if err != nil {
@@ -64,14 +54,4 @@ func (h *CallbackQueryHandler) answerAttendingCallback(ctx context.Context) erro
 		return err
 	}
 	return nil
-}
-
-// TODO @jonlee: To properly implement
-func appendAttendeeNameToAttendingSection(pollMessageBody, attendeeName string) string {
-	return fmt.Sprintf("%s\n%s", pollMessageBody, attendeeName)
-}
-
-// TODO @jonlee: To implement dynamically
-func (h *CallbackQueryHandler) getAttendeeName() string {
-	return h.callbackQuery.From.UserName
 }
