@@ -53,6 +53,13 @@ func Debugf(message string, debugObjects ...any) {
 	log.Printf("[DEBUG] %s", debugLog)
 }
 
+// ErrorIfNonNil logs the input error if it is non-nil.
+func ErrorIfNonNil(err error) {
+	if err != nil {
+		Errorf("%s", err)
+	}
+}
+
 // TODO @jonlee: tweak to take pointer of Update object.
 // TODO @jonlee: Update implementation to make log info more useful; only log fields that are helpful to reduce verbosity.
 func LogUpdateObject(update tgbotapi.Update) {
