@@ -6,6 +6,7 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	customerrors "github.com/jonleeyz/bball8bot/internal/custom-errors"
+	callbackdata "github.com/jonleeyz/bball8bot/internal/data/callback-data"
 	"github.com/jonleeyz/bball8bot/internal/util/logging"
 )
 
@@ -37,7 +38,7 @@ func Init(bot *tgbotapi.BotAPI, update *tgbotapi.Update) (*CallbackQueryHandler,
 
 func (h *CallbackQueryHandler) Handle(ctx context.Context) error {
 	callbackData := h.callbackQuery.Data
-	if callbackData == CALLBACK_DATA_ATTENDING {
+	if callbackData == callbackdata.ATTENDING {
 		return h.handleAttendingCallback(ctx)
 	}
 
