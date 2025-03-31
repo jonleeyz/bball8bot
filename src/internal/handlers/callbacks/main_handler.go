@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	customerrors "github.com/jonleeyz/bball8bot/internal/custom-errors"
 	callbackdata "github.com/jonleeyz/bball8bot/internal/data/callback-data"
+	customerrors "github.com/jonleeyz/bball8bot/internal/util/custom-errors"
 	"github.com/jonleeyz/bball8bot/internal/util/logging"
 )
 
